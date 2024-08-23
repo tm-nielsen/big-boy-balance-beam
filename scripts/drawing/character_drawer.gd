@@ -2,14 +2,16 @@
 class_name CharacterDrawer
 extends SquishyBallDrawer
 
-enum CharacterType {NONE = 0, PLAYER, OPPONENT, PLAYER_2, OPPONENT_2}
+# enum CharacterType {NONE = 0, PLAYER, OPPONENT, PLAYER_2, OPPONENT_2}
 
-@export var character_type := CharacterType.NONE
+# @export var character_type := CharacterType.NONE
+@export_file('*.svg') var file_path
 @export var path_set_drawer: SquishyPathSetDrawer
 
 
 func _ready():
-    var path_set: PathSet = CharacterSet.get_character(character_type)
+    var parse_result := PathSetReader.read_file(file_path)
+    var path_set: PathSet = parse_result.path_set
     if path_set != null:
         fill_colour = path_set.fill_colour
         stroke_colour = path_set.stroke_colour

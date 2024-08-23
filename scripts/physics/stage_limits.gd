@@ -8,15 +8,15 @@ extends Node2D
 @export var minimum_collision_speed: float = 1.0
 
 func _ready():
-    $NetCollisionArea.position = net_position
+    # $NetCollisionArea.position = net_position
     add_to_group("stage_limits")
 
 
-func _physics_process(_delta):
-    for area in $NetCollisionArea.get_overlapping_areas():
-        var parent_body = area.get_parent()
-        if parent_body is PhysicsBall:
-            collide_with_point(parent_body, net_position)
+# func _physics_process(_delta):
+    # for area in $NetCollisionArea.get_overlapping_areas():
+    #     var parent_body = area.get_parent()
+    #     if parent_body is PhysicsBall:
+    #         collide_with_point(parent_body, net_position)
 
 
 func collide_with_point(ball: PhysicsBall, point: Vector2):

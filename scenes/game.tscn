@@ -1,0 +1,71 @@
+[gd_scene load_steps=8 format=3 uid="uid://siguvig7u465"]
+
+[ext_resource type="Script" path="res://scripts/physics/stage_limits.gd" id="1_hx5yx"]
+[ext_resource type="Script" path="res://scripts/physics/player_controller.gd" id="1_m3mpd"]
+[ext_resource type="Script" path="res://scripts/physics_ball_manager.gd" id="1_vyn2h"]
+[ext_resource type="Script" path="res://scripts/drawing/character_drawer.gd" id="2_radw7"]
+[ext_resource type="Script" path="res://scripts/drawing/squishy_path_set_drawer.gd" id="3_mencq"]
+
+[sub_resource type="PlaceholderTexture2D" id="PlaceholderTexture2D_yo320"]
+size = Vector2(200, 5)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_qhkga"]
+size = Vector2(200, 5)
+
+[node name="Game" type="Node2D"]
+texture_filter = 1
+
+[node name="Camera2D" type="Camera2D" parent="."]
+
+[node name="StageLimits" type="Node2D" parent="."]
+script = ExtResource("1_hx5yx")
+left_wall = -120.0
+right_wall = 120.0
+ground = 60.0
+
+[node name="PhysicsBallManager" type="Node2D" parent="."]
+script = ExtResource("1_vyn2h")
+
+[node name="Player1" type="Node2D" parent="PhysicsBallManager"]
+position = Vector2(-40, 0)
+script = ExtResource("1_m3mpd")
+jump_charge_period = 0.2
+radius = 12.0
+minimum_bounce_speed = Vector2(2, 0.5)
+
+[node name="Drawer" type="Node2D" parent="PhysicsBallManager/Player1" node_paths=PackedStringArray("path_set_drawer")]
+script = ExtResource("2_radw7")
+file_path = "res://visuals/characters/a.svg"
+path_set_drawer = NodePath("PathSetDrawer")
+fill_colour = Color(0.564706, 0.611765, 0.917647, 1)
+stroke_colour = Color(0.431373, 0.458824, 0.890196, 1)
+
+[node name="PathSetDrawer" type="Node2D" parent="PhysicsBallManager/Player1/Drawer"]
+script = ExtResource("3_mencq")
+
+[node name="Player2" type="Node2D" parent="PhysicsBallManager"]
+position = Vector2(40, 0)
+script = ExtResource("1_m3mpd")
+player_index = 2
+jump_charge_period = 0.2
+radius = 12.0
+minimum_bounce_speed = Vector2(2, 0.5)
+
+[node name="Drawer" type="Node2D" parent="PhysicsBallManager/Player2" node_paths=PackedStringArray("path_set_drawer")]
+script = ExtResource("2_radw7")
+file_path = "res://visuals/characters/joker.svg"
+path_set_drawer = NodePath("PathSetDrawer")
+fill_colour = Color(0.368627, 0.321569, 0.247059, 0.701961)
+stroke_colour = Color(0.219608, 0.211765, 0.254902, 1)
+
+[node name="PathSetDrawer" type="Node2D" parent="PhysicsBallManager/Player2/Drawer"]
+script = ExtResource("3_mencq")
+
+[node name="Beam" type="AnimatableBody2D" parent="."]
+position = Vector2(0, 40)
+
+[node name="Sprite2D" type="Sprite2D" parent="Beam"]
+texture = SubResource("PlaceholderTexture2D_yo320")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Beam"]
+shape = SubResource("RectangleShape2D_qhkga")

@@ -1,15 +1,17 @@
 class_name PlayerController
 extends ControllableSquishyPhysicsBall
 
+@export_range(1, 2) var player_index: int = 1
+
 
 func _apply_forces(delta):
-    var strafe_direction = Input.get_action_strength("right")
-    strafe_direction -= Input.get_action_strength("left")
+    var strafe_direction = 1 if is_numbered_action_pressed("right") else 0
+    strafe_direction -= 1 if is_numbered_action_pressed("left") else 0
     is_applying_strafe_force = strafe_direction != 0
 
     velocity.x += strafe_force * delta * strafe_direction
 
-    should_charge_jump = Input.is_action_pressed("charge_jump")
+    should_charge_jump = is_numbered_action_pressed("charge_jump")
     
     super(delta)
 
@@ -27,3 +29,10 @@ func _collide_with_walls():
             velocity.x = -abs(velocity.x) * elasticity
         elif velocity.x > 0:
             velocity.x = 0
+
+
+func is_numbered_action_pressed(simple_name: String) -> bool:
+  return Input.is_action_pressed(_get_input_name(simple_name))
+
+func _get_input_name(simple_name: String) -> String:
+  return ("p%d_" % player_index) + simple_name

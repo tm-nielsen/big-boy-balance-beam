@@ -23,7 +23,7 @@ var circle_collider: CircleShape2D = CircleShape2D.new()
 func _ready():
     super()
     add_to_group("physics_balls")
-    stage_limits = get_tree().get_nodes_in_group("stage_limits")[0]
+    stage_limits = get_tree().get_first_node_in_group("stage_limits")
     compute_local_limits()
 
     circle_collider.radius = radius + collider_cushion
@@ -58,7 +58,7 @@ func _process_collisions(_delta):
         if parent_body is PhysicsObject:
             var _collision = collide_with(parent_body)
 
-    compute_local_limits()
+    # compute_local_limits()
     collide_with_local_limits()
 
 
@@ -70,18 +70,21 @@ func collide_with(p_body: PhysicsObject) -> Collision:
 
 
 func compute_local_limits():
-    var net_position = stage_limits.net_position
+    # var net_position = stage_limits.net_position
 
-    if(position.y > net_position.y):
-        if(position.x < net_position.x):
-            local_limits.left = stage_limits.left_wall
-            local_limits.right = net_position.x
-        else:
-            local_limits.left = net_position.x
-            local_limits.right = stage_limits.right_wall
-    else:
-        local_limits.left = stage_limits.left_wall
-        local_limits.right = stage_limits.right_wall
+    # if(position.y > net_position.y):
+    #     if(position.x < net_position.x):
+    #         local_limits.left = stage_limits.left_wall
+    #         local_limits.right = net_position.x
+    #     else:
+    #         local_limits.left = net_position.x
+    #         local_limits.right = stage_limits.right_wall
+    # else:
+    #     local_limits.left = stage_limits.left_wall
+    #     local_limits.right = stage_limits.right_wall
+
+    local_limits.left = stage_limits.left_wall
+    local_limits.right = stage_limits.right_wall
     
     local_limits.left += radius
     local_limits.right -= radius

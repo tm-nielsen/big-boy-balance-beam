@@ -4,13 +4,17 @@ extends Node2D
 signal reset_completed
 
 @export var reset_lerp_scale: float = 7.5
-@export var physics_balls: Array[PhysicsBall]
 
+var physics_balls: Array[PhysicsBall]
 var ball_start_positions := []
 var ball_count: int
 var is_resetting := false
 
 func _ready():
+    physics_balls = []
+    for child in get_children():
+        if child is PhysicsBall:
+            physics_balls.append(child)
     for ball in physics_balls:
         ball_start_positions.append(ball.position)
     ball_count = physics_balls.size()
