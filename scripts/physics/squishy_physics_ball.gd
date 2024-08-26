@@ -35,9 +35,8 @@ func _ready():
 func _process_movement(delta):
     _oscillate_squish_ratio(delta)
     _set_squish_state()
-    update_drawer_parameters()
-    
-    move_ball(delta)
+    update_drawer_parameters() 
+    super(delta)
 
 func update_drawer_parameters():
     drawer.update_parameters(visual_rotation, squish_ratio, squish_normal, squish_state)
@@ -148,7 +147,7 @@ func update_collider():
             var stadium_dimensions = drawer.stadium_dimensions
             set_collision_transform(PI / 2, Vector2.ONE, stadium_dimensions.position_offset)
             capsule_collider.radius = stadium_dimensions.radius + collider_cushion
-            capsule_collider.height = stadium_dimensions.length
+            capsule_collider.height = clampf(stadium_dimensions.length, 0, INF)
             collision_shape.shape = capsule_collider
 
         SquishState.EGG:

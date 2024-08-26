@@ -3,6 +3,7 @@ class_name BalanceBeam
 extends Node2D
 
 static var instance: BalanceBeam
+static var beam_angle: get = _get_beam_angle
 static var normal: get = _get_normal
 static var tangent: get = _get_tangent
 
@@ -39,7 +40,7 @@ func _draw():
 func _physics_process(delta: float):
   if physics_enabled:
     _process_movement(delta)
-    _process_collisions()
+    _process_collisions(delta)
 
 func _process_movement(delta: float):
   timer += delta
@@ -49,17 +50,21 @@ func _process_movement(delta: float):
   rotation = clamp(rotation, -max_angle, max_angle)
 
 
-func _process_collisions():
+func _process_collisions(delta: float):
   var balls = get_tree().get_nodes_in_group(PhysicsBall.GROUP_NAME)
-  var beam_ends = _get_beam_ends()
+  # var beam_ends = _get_beam_ends()
 
   for ball in balls:
-    var central_collision_point = _get_collision_point(ball)
-    if central_collision_point:
-      collide_with_central_beam(ball, central_collision_point)
+    var collision_point = _get_beam_point(ball.position)
+    if collision_point:
+      if (ball.position - collision_point).dot(normal) > 0:
+        collide_with_beam(ball, collision_point, delta)
+      else: collide_with_elastic_point(ball, collision_point)
     else:
-      for end_point in beam_ends:
-        collide_with_beam_end(ball, end_point)
+      ball.on_no_beam_collision()
+    # else:
+    #   for end_point in beam_ends:
+    #     collide_with_elastic_point(ball, end_point)
   
 
 func reset():
@@ -74,8 +79,13 @@ func _get_beam_ends() -> Array[Vector2]:
   return [position + half_length, position - half_length]
 
 
-func _get_collision_point(ball: Node2D):
-  var displacement = ball.position - position
+static func get_beam_point(point: Vector2):
+  if instance:
+    return instance._get_beam_point(point)
+  return null
+
+func _get_beam_point(point: Vector2):
+  var displacement = point - position
   var half_length = tangent * width / 2
 
   var left_dot = tangent.dot(displacement + half_length)
@@ -87,7 +97,22 @@ func _get_collision_point(ball: Node2D):
     return null
 
 
-func collide_with_beam_end(ball: PhysicsBall, point: Vector2):
+func collide_with_beam(ball: PhysicsBall, point: Vector2, delta: float):
+  if ball_intersects_point(ball, point):
+    var normal_velocity = ball.velocity.project(normal)
+
+    var collision_speed = normal_velocity.length()
+    var centre_distance = (point - position).dot(tangent)
+    var rotation_impulse = ball_mass * collision_speed
+    rotation_impulse *= centre_distance / width
+    angular_velocity += rotation_impulse * delta
+    
+    ball.on_beam_collision(normal_velocity)
+  else:
+    ball.on_no_beam_collision()
+
+
+func collide_with_elastic_point(ball: PhysicsBall, point: Vector2):
   if ball_intersects_point(ball, point):
     var displacement = ball.position - point
 
@@ -98,39 +123,28 @@ func collide_with_beam_end(ball: PhysicsBall, point: Vector2):
     ball.velocity = collision_normal * collision_speed
 
 
-func collide_with_central_beam(ball: PhysicsBall, point: Vector2):
-  if ball_intersects_point(ball, point):
-    var normal_velocity = ball.velocity.project(normal)
-
-    var collision_speed = normal_velocity.length()
-    var centre_distance = (point - position).dot(tangent)
-    var rotation_impulse = ball_mass * collision_speed
-    rotation_impulse *= centre_distance / width
-    angular_velocity += rotation_impulse
-    
-    ball.land(point, normal_velocity)
-
-
 func ball_intersects_point(ball: PhysicsBall, point: Vector2) -> bool:
-  var space_state = get_world_2d().direct_space_state
-  var query_parameters = PhysicsPointQueryParameters2D.new()
-  query_parameters.position = point
-  query_parameters.collide_with_areas = true
-  query_parameters.collide_with_bodies = false
+  return (ball.position - point).length() < ball.radius
 
-  var query_result = space_state.intersect_point(query_parameters)
-  for result_entry in query_result:
-    if result_entry.collider == ball.collision_area:
-      return true
-  return false
+  # var space_state = get_world_2d().direct_space_state
+  # var query_parameters = PhysicsPointQueryParameters2D.new()
+  # query_parameters.position = point
+  # query_parameters.collide_with_areas = true
+  # query_parameters.collide_with_bodies = false
 
+  # var query_result = space_state.intersect_point(query_parameters)
+  # for result_entry in query_result:
+  #   if result_entry.collider == ball.collision_area:
+  #     return true
+  # return false
+
+
+static func _get_beam_angle() -> float:
+  if instance: return instance.rotation
+  return 0
 
 static func _get_normal() -> Vector2:
-  if instance:
-    return Vector2.UP.rotated(instance.rotation)
-  return Vector2.UP
+  return Vector2.UP.rotated(beam_angle)
 
 static func _get_tangent() -> Vector2:
-  if instance:
-    return Vector2.RIGHT.rotated(instance.rotation)
-  return Vector2.RIGHT
+  return Vector2.RIGHT.rotated(beam_angle)

@@ -18,7 +18,6 @@ script = ExtResource("1_s5gh3")
 [node name="Beam" type="Node2D" parent="."]
 position = Vector2(0, 40)
 script = ExtResource("5_x52g1")
-ball_mass = 0.2
 
 [node name="PhysicsBallManager" type="Node2D" parent="." node_paths=PackedStringArray("balance_beam")]
 script = ExtResource("1_vyn2h")
@@ -27,27 +26,9 @@ balance_beam = NodePath("../Beam")
 [node name="Player1" type="Node2D" parent="PhysicsBallManager"]
 position = Vector2(-40, 0)
 script = ExtResource("1_m3mpd")
-player_index = null
-strafe_force = null
-jump_speed = null
 jump_charge_period = 0.2
-charged_squish_ratio = null
-max_squish_ratio = null
-max_visual_ellipse_squish_ratio = null
-jump_squish_elasticity = null
-landing_squish_elasticity = null
-squish_reset_elasticity = null
-squish_reset_friction = null
-ground_squish_reset_elasticity = null
-maximum_collision_jiggle = null
-gravity = null
-x_friction = null
-elasticity = null
 radius = 12.0
-collider_cushion = null
 minimum_bounce_speed = Vector2(2, 0.5)
-minimum_collision_speed = null
-collision_elasticity = null
 
 [node name="Drawer" type="Node2D" parent="PhysicsBallManager/Player1" node_paths=PackedStringArray("path_set_drawer")]
 script = ExtResource("2_radw7")
@@ -63,26 +44,9 @@ script = ExtResource("3_mencq")
 position = Vector2(40, 0)
 script = ExtResource("1_m3mpd")
 player_index = 2
-strafe_force = null
-jump_speed = null
 jump_charge_period = 0.2
-charged_squish_ratio = null
-max_squish_ratio = null
-max_visual_ellipse_squish_ratio = null
-jump_squish_elasticity = null
-landing_squish_elasticity = null
-squish_reset_elasticity = null
-squish_reset_friction = null
-ground_squish_reset_elasticity = null
-maximum_collision_jiggle = null
-gravity = null
-x_friction = null
-elasticity = null
 radius = 12.0
-collider_cushion = null
 minimum_bounce_speed = Vector2(2, 0.5)
-minimum_collision_speed = null
-collision_elasticity = null
 
 [node name="Drawer" type="Node2D" parent="PhysicsBallManager/Player2" node_paths=PackedStringArray("path_set_drawer")]
 script = ExtResource("2_radw7")
