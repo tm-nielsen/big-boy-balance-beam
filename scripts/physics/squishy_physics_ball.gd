@@ -51,7 +51,7 @@ func _process_collisions(delta):
 func _oscillate_squish_ratio(delta):
     var delta_scale = 60 * delta
 
-    var squish_elasticity = ground_squish_reset_elasticity if on_ground else squish_reset_elasticity
+    var squish_elasticity = ground_squish_reset_elasticity if on_beam else squish_reset_elasticity
 
     squish_reset_delta += (squish_reset_target - squish_ratio) * squish_elasticity * delta
     squish_reset_delta *= (1 - squish_reset_friction * delta_scale)
@@ -105,33 +105,17 @@ func collide_with(p_body:PhysicsObject) -> Collision:
         var jiggle_magnitude = maximum_collision_jiggle * ease(collision.speed / 10, 0.2)
 
         jiggle_magnitude = max(jiggle_magnitude, 0)
-        add_jiggle(jiggle_magnitude, Vector2.UP if on_ground else collision.normal.rotated(PI/2))
+        add_jiggle(jiggle_magnitude, Vector2.UP if on_beam else collision.normal.rotated(PI/2))
         squish_state = SquishState.ELLIPSE
 
     return collision
 
 
 func compute_local_limits():
-    var net_position = stage_limits.net_position
-
-    var limit_left_by_center_width = false
-    var limit_right_by_center_width = false
-    if(position.y > net_position.y):
-        if(position.x < net_position.x):
-            local_limits.left = stage_limits.left_wall
-            local_limits.right = net_position.x
-            limit_right_by_center_width = true
-        else:
-            local_limits.left = net_position.x
-            local_limits.right = stage_limits.right_wall
-            limit_left_by_center_width = true
-    else:
-        local_limits.left = stage_limits.left_wall
-        local_limits.right = stage_limits.right_wall
-    
-    local_limits.left += get_horizontal_limit(true, limit_left_by_center_width)
-    local_limits.right -= get_horizontal_limit(false, limit_right_by_center_width)
-    local_limits.ground = stage_limits.ground - get_vertical_limit()
+    left_limit = StageLimits.left
+    right_limit = StageLimits.right
+    left_limit += get_horizontal_limit(true)
+    right_limit -= get_horizontal_limit(false)
 
 func get_horizontal_limit(left: bool = false, limit_by_center_width: bool = false) -> float:
     match squish_state:
@@ -148,12 +132,6 @@ func get_horizontal_limit(left: bool = false, limit_by_center_width: bool = fals
 
         _:
             return radius
-
-func get_vertical_limit() -> float:
-    if squish_state == SquishState.ELLIPSE:
-        return drawer.elliptical_extents.y
-    else:
-        return radius
 
 
 func update_collider():

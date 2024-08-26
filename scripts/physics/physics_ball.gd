@@ -1,29 +1,26 @@
 class_name PhysicsBall
 extends PhysicsObject
 
+const GROUP_NAME = "physics balls"
+
 @export var gravity: float = 9.81
 @export var x_friction: float = 0.05
 @export var elasticity: float = 0.65
 @export var radius: float = 20
-@export var collider_cushion = 0.75
+@export var collider_cushion: float = 0.75
 @export var minimum_bounce_speed: Vector2 = Vector2(0, 0.5)
 
-var visual_rotation = 0.0
-var on_ground = false
+var visual_rotation: float = 0.0
+var on_beam: bool = false
 
-var stage_limits
-var local_limits = {
-    left = -160.0,
-    right = 160.0,
-    ground = 80.0,
-}
+var left_limit: float
+var right_limit: float
 
 var circle_collider: CircleShape2D = CircleShape2D.new()
 
 func _ready():
     super()
-    add_to_group("physics_balls")
-    stage_limits = get_tree().get_first_node_in_group("stage_limits")
+    add_to_group(GROUP_NAME)
     compute_local_limits()
 
     circle_collider.radius = radius + collider_cushion
@@ -37,8 +34,6 @@ func _process_movement(delta):
     move_ball(delta)
 
 func move_ball(delta):
-    z_index = 1 if position.x < stage_limits.net_position.x else -1
-
     var delta_scale = 60 * delta
     position += velocity * delta_scale
     
@@ -48,8 +43,15 @@ func move_ball(delta):
     elif visual_rotation < 0:
         visual_rotation += TAU
 
-func _on_land():
-    pass
+    on_beam = false
+
+
+func land(beam_point: Vector2, normal_velocity: Vector2):
+    position = beam_point + radius * BalanceBeam.normal
+
+    velocity -= normal_velocity
+    # if normal_velocity.length() > minimum_bounce_speed.y:
+    #     velocity += normal_velocity * elasticity
 
 
 func _process_collisions(_delta):
@@ -58,7 +60,7 @@ func _process_collisions(_delta):
         if parent_body is PhysicsObject:
             var _collision = collide_with(parent_body)
 
-    # compute_local_limits()
+    compute_local_limits()
     collide_with_local_limits()
 
 
@@ -70,49 +72,20 @@ func collide_with(p_body: PhysicsObject) -> Collision:
 
 
 func compute_local_limits():
-    # var net_position = stage_limits.net_position
-
-    # if(position.y > net_position.y):
-    #     if(position.x < net_position.x):
-    #         local_limits.left = stage_limits.left_wall
-    #         local_limits.right = net_position.x
-    #     else:
-    #         local_limits.left = net_position.x
-    #         local_limits.right = stage_limits.right_wall
-    # else:
-    #     local_limits.left = stage_limits.left_wall
-    #     local_limits.right = stage_limits.right_wall
-
-    local_limits.left = stage_limits.left_wall
-    local_limits.right = stage_limits.right_wall
-    
-    local_limits.left += radius
-    local_limits.right -= radius
-    local_limits.ground = stage_limits.ground - radius
+    left_limit = StageLimits.left + radius
+    right_limit = StageLimits.right - radius
 
 
 func collide_with_local_limits():
-    _collide_with_ground()
     _collide_with_walls()
 
-func _collide_with_ground():
-    on_ground = false
-    if position.y > local_limits.ground:
-        _on_land()
-        position.y = local_limits.ground
-        velocity.y *= -elasticity
-
-        on_ground = true
-        if abs(velocity.y) < minimum_bounce_speed.y:
-            velocity.y = 0
-
 func _collide_with_walls():
-    if position.x < local_limits.left:
-        position.x = local_limits.left
+    if position.x < left_limit:
+        position.x = left_limit
         velocity.x = abs(velocity.x) * elasticity
         
-    if position.x > local_limits.right:
-        position.x = local_limits.right
+    if position.x > right_limit:
+        position.x = right_limit
         velocity.x = -abs(velocity.x) * elasticity
 
 

@@ -16,15 +16,15 @@ func _apply_forces(delta):
     super(delta)
 
 func _collide_with_walls():
-    if position.x < local_limits.left:
-        position.x = local_limits.left
+    if position.x < left_limit:
+        position.x =  left_limit
         if !is_applying_strafe_force or velocity.x < -minimum_bounce_speed.x:
             velocity.x = abs(velocity.x) * elasticity
         elif velocity.x < 0:
             velocity.x = 0
         
-    if position.x > local_limits.right:
-        position.x = local_limits.right
+    if position.x > right_limit:
+        position.x = right_limit
         if !is_applying_strafe_force or velocity.x > minimum_bounce_speed.x:
             velocity.x = -abs(velocity.x) * elasticity
         elif velocity.x > 0:

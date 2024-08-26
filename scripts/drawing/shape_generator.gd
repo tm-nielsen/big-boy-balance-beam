@@ -79,3 +79,15 @@ static func generate_arc(radius: float, angle_from: float, angle_to: float,
         points.push_back(center + Vector2(cos(angle), sin(angle)) * radius)
 
     return points
+
+
+# Generate points of an isosceles triangle with centre at base
+static func generate_triangle(width: float, height: float,
+        centre:= Vector2.ZERO) -> PackedVector2Array:
+
+    var points = PackedVector2Array()
+    points.push_back(centre + Vector2.RIGHT * width / 2)
+    points.push_back(centre + Vector2.LEFT * width / 2)
+    points.push_back(centre + Vector2.UP * height)
+
+    return points

@@ -14,7 +14,7 @@ var is_applying_strafe_force
 
 func _process_movement(delta):
 
-    if on_ground and should_charge_jump:
+    if on_beam and should_charge_jump:
         _charge_jump(delta)
     
     if charging_jump and !should_charge_jump:
@@ -22,7 +22,16 @@ func _process_movement(delta):
 
     super(delta)
 
-func _on_land():
+func reset():
+    physics_enabled = true
+    velocity = Vector2.ZERO
+    should_charge_jump = false
+    charging_jump = false
+    jump_charge = 0
+    is_applying_strafe_force = false
+
+func land(ground_point: Vector2, normal_velocity: Vector2):
+    super(ground_point, normal_velocity)
     if !charging_jump:
         if should_charge_jump:
             jump_charge = abs(velocity.y) / jump_speed
@@ -53,7 +62,7 @@ func _charge_jump(delta):
 
 func _apply_jump_charge():
     charging_jump = true
-    velocity.y = 0
+    velocity -= velocity.project(BalanceBeam.normal)
 
     if(jump_charge > 1):
         jump_charge = 1.0
