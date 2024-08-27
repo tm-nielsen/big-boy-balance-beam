@@ -1,6 +1,6 @@
 [gd_scene load_steps=7 format=3 uid="uid://siguvig7u465"]
 
-[ext_resource type="Script" path="res://scripts/physics/player_controller.gd" id="1_m3mpd"]
+[ext_resource type="Script" path="res://scripts/physics/balls/player_controller.gd" id="1_m3mpd"]
 [ext_resource type="Script" path="res://scripts/physics/stage_limits.gd" id="1_s5gh3"]
 [ext_resource type="Script" path="res://scripts/physics_ball_manager.gd" id="1_vyn2h"]
 [ext_resource type="Script" path="res://scripts/drawing/character_drawer.gd" id="2_radw7"]
