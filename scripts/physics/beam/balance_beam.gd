@@ -48,6 +48,9 @@ func _process_movement(delta: float):
 func _process_collisions(delta: float):
   var balls = get_tree().get_nodes_in_group(PhysicsBall.GROUP_NAME)
 
+  var half_length = tangent * width / 2
+  var ends = [position - half_length, position + half_length]
+
   for ball in balls:
     var collision_point = _get_beam_point(ball.position)
     if collision_point:
@@ -56,6 +59,9 @@ func _process_collisions(delta: float):
       else: collide_with_elastic_point(ball, collision_point)
     else:
       ball.on_no_beam_collision()
+    
+    for end_point in ends:
+      collide_with_elastic_point(ball, end_point, 0)
   
 
 func reset():
@@ -101,15 +107,16 @@ func collide_with_beam(ball: PhysicsBall, point: Vector2, delta: float):
     ball.on_no_beam_collision()
 
 
-func collide_with_elastic_point(ball: PhysicsBall, point: Vector2):
+func collide_with_elastic_point(ball: PhysicsBall, point: Vector2, \
+    p_minimum_collision_speed := minimum_collision_speed):
   if ball_intersects_point(ball, point):
     var displacement = ball.position - point
 
     var collision_normal = displacement.normalized()
     var collision_speed = ball.velocity.length() * ball.elasticity
-    collision_speed += minimum_collision_speed
+    collision_speed += p_minimum_collision_speed
 
-    ball.velocity = collision_normal * collision_speed
+    ball.velocity += collision_normal * collision_speed
 
 
 func ball_intersects_point(ball: PhysicsBall, point: Vector2) -> bool:
