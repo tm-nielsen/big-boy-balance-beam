@@ -13,6 +13,7 @@ static var tangent: get = _get_tangent
 @export var friction: float = 0.03
 @export var loosening_factor: float = 1
 @export_range(0, 180) var max_angle_degrees: float = 60
+@export_range(0, 1) var max_angle_bounce: float = 0.2
 @export var minimum_collision_speed: float = 1
 @export var ball_mass: float = 1
 
@@ -34,8 +35,17 @@ func _ready():
   max_angle = deg_to_rad(max_angle_degrees)
 
 func _draw():
-  var tri_shape = ShapeGenerator.generate_triangle(width, -height)
-  ShapeDrawer.draw_shape(self, tri_shape, fill_colour, stroke_width, stroke_colour)
+  var shape_points = PackedVector2Array()
+  var right_end = Vector2.RIGHT * width / 2
+  var left_end = Vector2.LEFT * width / 2
+  var bottom = Vector2.DOWN * height
+
+  shape_points.push_back(right_end)
+  shape_points.push_back(right_end + bottom / 2)
+  shape_points.push_back(bottom)
+  shape_points.push_back(left_end + bottom / 2)
+  shape_points.push_back(left_end)
+  ShapeDrawer.draw_shape(self, shape_points, fill_colour, stroke_width, stroke_colour)
 
 func _physics_process(delta: float):
   if physics_enabled:
@@ -47,12 +57,14 @@ func _process_movement(delta: float):
   angular_velocity -= angular_velocity * friction * delta
   var looseness = (1 + timer * loosening_factor)
   rotation += angular_velocity * looseness * delta
-  rotation = clamp(rotation, -max_angle, max_angle)
+
+  if abs(rotation) > max_angle:
+    rotation = clamp(rotation, -max_angle, max_angle)
+    angular_velocity *= -max_angle_bounce
 
 
 func _process_collisions(delta: float):
   var balls = get_tree().get_nodes_in_group(PhysicsBall.GROUP_NAME)
-  # var beam_ends = _get_beam_ends()
 
   for ball in balls:
     var collision_point = _get_beam_point(ball.position)
@@ -62,9 +74,6 @@ func _process_collisions(delta: float):
       else: collide_with_elastic_point(ball, collision_point)
     else:
       ball.on_no_beam_collision()
-    # else:
-    #   for end_point in beam_ends:
-    #     collide_with_elastic_point(ball, end_point)
   
 
 func reset():
@@ -125,18 +134,6 @@ func collide_with_elastic_point(ball: PhysicsBall, point: Vector2):
 
 func ball_intersects_point(ball: PhysicsBall, point: Vector2) -> bool:
   return (ball.position - point).length() < ball.radius
-
-  # var space_state = get_world_2d().direct_space_state
-  # var query_parameters = PhysicsPointQueryParameters2D.new()
-  # query_parameters.position = point
-  # query_parameters.collide_with_areas = true
-  # query_parameters.collide_with_bodies = false
-
-  # var query_result = space_state.intersect_point(query_parameters)
-  # for result_entry in query_result:
-  #   if result_entry.collider == ball.collision_area:
-  #     return true
-  # return false
 
 
 static func _get_beam_angle() -> float:
