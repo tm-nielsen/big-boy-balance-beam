@@ -3,8 +3,8 @@
 [ext_resource type="Script" path="res://scripts/physics/balls/player_controller.gd" id="1_m3mpd"]
 [ext_resource type="Script" path="res://scripts/physics/stage_limits.gd" id="1_s5gh3"]
 [ext_resource type="Script" path="res://scripts/physics/balls/physics_ball_manager.gd" id="1_vyn2h"]
-[ext_resource type="Script" path="res://scripts/drawing/character_drawer.gd" id="2_radw7"]
-[ext_resource type="Script" path="res://scripts/drawing/squishy_path_set_drawer.gd" id="3_mencq"]
+[ext_resource type="Script" path="res://scripts/drawing/path_drawing/character_drawer.gd" id="2_radw7"]
+[ext_resource type="Script" path="res://scripts/drawing/path_drawing/squishy_path_set_drawer.gd" id="3_mencq"]
 [ext_resource type="Script" path="res://scripts/physics/balance_beam.gd" id="5_x52g1"]
 
 [node name="Game" type="Node2D"]
