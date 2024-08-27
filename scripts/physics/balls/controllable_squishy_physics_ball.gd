@@ -2,19 +2,33 @@ class_name ControllableSquishyPhysicsBall
 extends SquishyPhysicsBall
 
 @export var strafe_force: float = 25
-@export var jump_speed: float = 5
-@export var jump_charge_period: float = 0.5
 @export var charged_squish_ratio: float = 0.6
 
-var should_charge_jump = false
-var charging_jump = false
-var jump_charge = 0.0
-var is_applying_strafe_force
+@export_subgroup('jump', 'jump')
+@export var jump_speed: float = 5
+@export var jump_charge_period: float = 0.5
+
+@export_subgroup('drop slam', 'drop')
+@export var drop_force: float = 10
+@export var drop_impulse: float = 2
+@export var drop_squish_ratio: float = 1.2
+@export var drop_squish_elasticity: float = 0.5
+
+var should_charge_jump: bool = false
+var charging_jump: bool = false
+var jump_charge: float = 0.0
+var is_dropping: bool = false
+var is_applying_strafe_force: bool
 
 
 func _process_movement(delta):
-    if on_beam and should_charge_jump:
-        _charge_jump(delta)
+    if should_charge_jump:
+        if on_beam:
+            _charge_jump(delta)
+        elif !charging_jump:
+            _drop(delta)
+    elif is_dropping:
+        _end_drop()
     
     if charging_jump and !should_charge_jump:
         _jump()
@@ -31,6 +45,7 @@ func reset():
 
 func _on_land(normal_velocity: Vector2):
     super(normal_velocity)
+    _end_drop()
     if !charging_jump:
         if should_charge_jump:
             jump_charge = abs(velocity.y) / jump_speed
@@ -69,6 +84,29 @@ func _apply_jump_charge():
 
     squish_reset_target = lerpf(1, charged_squish_ratio, jump_charge)
     queue_redraw()
+
+
+func _drop(delta):
+    velocity.y += drop_force * delta
+    squish_normal = velocity.normalized()
+    if !is_dropping:
+        _start_drop()
+
+func _start_drop():
+    is_dropping = true
+    if velocity.y < 0: velocity.y = 0
+    velocity.y += drop_impulse
+
+    var squish_offset = (drop_squish_ratio - squish_ratio)
+    squish_reset_delta = squish_offset * drop_squish_elasticity
+    squish_ratio = 1
+    squish_reset_target = drop_squish_ratio
+    squish_state = SquishState.EGG
+
+
+func _end_drop():
+    is_dropping = false
+    squish_reset_target = 1
 
 
 func _jump():

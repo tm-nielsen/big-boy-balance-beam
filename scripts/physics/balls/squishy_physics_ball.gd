@@ -24,6 +24,7 @@ enum SquishState {
     EGG,
 }
 var squish_state = SquishState.CIRCLE
+var squish_elasticity: get = _get_squish_elasticity
 
 
 func _ready():
@@ -49,8 +50,6 @@ func update_drawer_parameters():
 func _oscillate_squish_ratio(delta):
     var delta_scale = 60 * delta
 
-    var squish_elasticity = ground_squish_reset_elasticity if on_beam else squish_reset_elasticity
-
     squish_reset_delta += (squish_reset_target - squish_ratio) * squish_elasticity * delta
     squish_reset_delta *= (1 - squish_reset_friction * delta_scale)
     squish_ratio += squish_reset_delta * delta_scale
@@ -69,6 +68,9 @@ func _set_squish_state():
 
     else:
         squish_state = SquishState.ELLIPSE
+
+func _get_squish_elasticity() -> float:
+    return ground_squish_reset_elasticity if on_beam else squish_reset_elasticity
 
 
 # add an impulse to the squish oscillation
