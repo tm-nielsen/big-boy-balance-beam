@@ -39,7 +39,8 @@ func move_ball(delta):
 
     if on_beam:
         rotation = BalanceBeam.beam_angle
-        _move_to_beam()
+        if velocity.dot(BalanceBeam.normal) < 0:
+            _move_to_beam()
     
     visual_rotation += velocity.x * delta_scale / radius
     if visual_rotation > TAU:
@@ -57,7 +58,7 @@ func on_beam_collision(normal_velocity: Vector2):
 
 func _on_land(normal_velocity: Vector2):
     on_beam = true
-    visual_rotation -= rotation
+    rotation = BalanceBeam.beam_angle
     if normal_velocity.length() > minimum_bounce_speed.y && \
             normal_velocity.dot(BalanceBeam.normal) < 0:
         velocity -= normal_velocity * elasticity
@@ -68,20 +69,24 @@ func on_no_beam_collision():
 
 func _on_leave_beam():
     on_beam = false
-    visual_rotation += rotation
     rotation = 0
 
 func _move_to_beam():
     var beam_point = BalanceBeam.get_beam_point(position)
     if beam_point:
-        position = beam_point + radius * BalanceBeam.normal * 0.95
+        position = beam_point + radius * BalanceBeam.normal * 0.99
 
 
 func _process_collisions(_delta):
-    for area in collision_area.get_overlapping_areas():
-        var parent_body = area.get_parent()
-        if parent_body is PhysicsObject:
-            var _collision = collide_with(parent_body)
+    for ball in get_tree().get_nodes_in_group(GROUP_NAME):
+        if ball == self:
+            continue
+        if ball.position.distance_to(position) < radius + ball.radius:
+            var _collision = collide_with(ball)
+    # for area in collision_area.get_overlapping_areas():
+    #     var parent_body = area.get_parent()
+    #     if parent_body is PhysicsObject:
+    #         var _collision = collide_with(parent_body)
 
     compute_local_limits()
     collide_with_local_limits()

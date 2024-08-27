@@ -39,7 +39,8 @@ func _process_movement(delta):
     super(delta)
 
 func update_drawer_parameters():
-    drawer.update_parameters(visual_rotation, squish_ratio, squish_normal, squish_state)
+    var drawer_rotation = visual_rotation - rotation
+    drawer.update_parameters(drawer_rotation, squish_ratio, squish_normal, squish_state)
 
 
 func _process_collisions(delta):

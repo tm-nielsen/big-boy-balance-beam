@@ -83,6 +83,3 @@ func _jump():
     charging_jump = false
     should_charge_jump = false
     jump_charge = 0.0
-
-    on_beam = false
-    _on_leave_beam()
