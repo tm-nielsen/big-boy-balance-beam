@@ -17,6 +17,7 @@ static var tangent: get = _get_tangent
 @export_subgroup('collisions')
 @export var minimum_collision_speed: float = 1
 @export var ball_mass: float = 1
+@export var ball_slam_multiplier: float = 5
 
 var physics_enabled: bool = true
 var max_angle: float
@@ -89,6 +90,8 @@ func collide_with_beam(ball: PhysicsBall, point: Vector2, delta: float):
     var centre_distance = (point - position).dot(tangent)
     var rotation_impulse = ball_mass * collision_speed
     rotation_impulse *= centre_distance / width
+    if 'is_dropping' in ball && ball.is_dropping:
+      rotation_impulse *= ball_slam_multiplier
     angular_velocity += rotation_impulse * delta
     
     ball.on_beam_collision(normal_velocity)
