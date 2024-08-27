@@ -11,43 +11,24 @@ static var tangent: get = _get_tangent
 
 @export_subgroup('movement')
 @export var friction: float = 0.03
-@export var loosening_factor: float = 1
 @export_range(0, 180) var max_angle_degrees: float = 60
 @export_range(0, 1) var max_angle_bounce: float = 0.2
+
+@export_subgroup('collisions')
 @export var minimum_collision_speed: float = 1
 @export var ball_mass: float = 1
 
-@export_subgroup('drawing')
-@export var height: float = 6
-@export var fill_colour: Color
-@export var stroke_colour: Color
-@export var stroke_width: float = -1
-
 var physics_enabled: bool = true
+var max_angle: float
 
 var angular_velocity: float
-var max_angle: float
-var timer: float
+var velocity_multiplier: get = _get_velocity_multiplier
 
 
 func _ready():
   instance = self
   max_angle = deg_to_rad(max_angle_degrees)
 
-func _draw():
-  var shape_points = PackedVector2Array()
-  var right_end = Vector2.RIGHT * width / 2
-  var left_end = Vector2.LEFT * width / 2
-  var bottom = Vector2.DOWN * height
-  var stroke_offset = Vector2.DOWN * stroke_width / 2
-
-  shape_points.push_back(right_end + stroke_offset)
-  shape_points.push_back(right_end + bottom / 2)
-  shape_points.push_back(bottom)
-  shape_points.push_back(left_end + bottom / 2)
-  shape_points.push_back(left_end + stroke_offset)
-
-  ShapeDrawer.draw_shape(self, shape_points, fill_colour, stroke_width, stroke_colour)
 
 func _physics_process(delta: float):
   if physics_enabled:
@@ -55,10 +36,8 @@ func _physics_process(delta: float):
     _process_collisions(delta)
 
 func _process_movement(delta: float):
-  timer += delta
   angular_velocity -= angular_velocity * friction * delta
-  var looseness = (1 + timer * loosening_factor)
-  rotation += angular_velocity * looseness * delta
+  rotation += angular_velocity * velocity_multiplier * delta
 
   if abs(rotation) > max_angle:
     rotation = clamp(rotation, -max_angle, max_angle)
@@ -82,12 +61,6 @@ func reset():
   physics_enabled = true
   rotation = 0
   angular_velocity = 0
-  timer = 0
-
-
-func _get_beam_ends() -> Array[Vector2]:
-  var half_length = tangent * width / 2
-  return [position + half_length, position - half_length]
 
 
 static func get_beam_point(point: Vector2):
@@ -147,3 +120,6 @@ static func _get_normal() -> Vector2:
 
 static func _get_tangent() -> Vector2:
   return Vector2.RIGHT.rotated(beam_angle)
+
+func _get_velocity_multiplier() -> float:
+  return 1
