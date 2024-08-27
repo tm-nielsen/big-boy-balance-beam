@@ -10,6 +10,8 @@ const GROUP_NAME = "physics balls"
 @export var collider_cushion: float = 2
 @export var minimum_bounce_speed: Vector2 = Vector2(0, 0.5)
 
+var starting_position: Vector2
+
 var visual_rotation: float = 0.0
 var on_beam: bool = false
 
@@ -18,7 +20,24 @@ var right_limit: float
 
 func _ready():
     add_to_group(GROUP_NAME)
+    starting_position = position
     compute_local_limits()
+
+func start_tweened_reset(reset_tween: Tween, duration: float):
+    physics_enabled = false
+    on_beam = false
+    velocity = Vector2.ZERO
+    rotation = 0
+    reset_tween.tween_property(self, 'position', starting_position, duration)
+    reset_tween.tween_property(self, 'visual_rotation', 0, duration)
+
+func reset():
+    physics_enabled = true
+    velocity = Vector2.ZERO
+    position = starting_position
+    visual_rotation = 0
+    rotation = 0
+
 
 func _apply_forces(delta):
     velocity.y += gravity * delta
@@ -77,7 +96,6 @@ func add_collision(collision: Collision):
     var centre_distance = collision.centre.distance_to(position)
     if centre_distance < radius:
         position += collision.normal * (radius - centre_distance)
-
 
 
 func compute_local_limits():

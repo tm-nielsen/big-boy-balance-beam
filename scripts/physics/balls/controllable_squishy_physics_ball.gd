@@ -21,6 +21,22 @@ var is_dropping: bool = false
 var is_applying_strafe_force: bool
 
 
+func start_tweened_reset(reset_tween: Tween, duration: float):
+    super(reset_tween, duration)
+    _reset_movement_flags()
+
+func reset():
+    super()
+    _reset_movement_flags()
+
+func _reset_movement_flags():
+    should_charge_jump = false
+    charging_jump = false
+    jump_charge = 0
+    is_dropping = false
+    is_applying_strafe_force = false
+
+
 func _process_movement(delta):
     if should_charge_jump:
         if on_beam:
@@ -34,14 +50,6 @@ func _process_movement(delta):
         _jump()
 
     super(delta)
-
-func reset():
-    physics_enabled = true
-    velocity = Vector2.ZERO
-    should_charge_jump = false
-    charging_jump = false
-    jump_charge = 0
-    is_applying_strafe_force = false
 
 func _on_land(normal_velocity: Vector2):
     super(normal_velocity)

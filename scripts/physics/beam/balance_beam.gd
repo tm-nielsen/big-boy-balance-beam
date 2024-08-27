@@ -30,11 +30,22 @@ func _ready():
   instance = self
   max_angle = deg_to_rad(max_angle_degrees)
 
-
 func _physics_process(delta: float):
   if physics_enabled:
     _process_movement(delta)
     _process_collisions(delta)
+
+
+func start_tweened_reset(reset_tween: Tween, duration: float):
+  physics_enabled = false
+  angular_velocity = 0
+  reset_tween.tween_property(self, 'rotation', 0, duration)
+
+func reset():
+  physics_enabled = true
+  rotation = 0
+  angular_velocity = 0
+
 
 func _process_movement(delta: float):
   angular_velocity -= angular_velocity * friction * delta
@@ -62,12 +73,6 @@ func _process_collisions(delta: float):
     
     for end_point in ends:
       collide_with_elastic_point(ball, end_point, 0)
-  
-
-func reset():
-  physics_enabled = true
-  rotation = 0
-  angular_velocity = 0
 
 
 static func get_beam_point(point: Vector2):

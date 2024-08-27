@@ -22,15 +22,28 @@ var shrink_timer: float
 var shrink_tween: Tween
 
 
+func start_tweened_reset(reset_tween: Tween, duration: float):
+  super(reset_tween, duration)
+  _reset_timers()
+  reset_tween.tween_property(self, 'width', starting_width, duration)
+
 func reset():
   super()
-  timer = 0
-  shrink_timer = 0
-  if shrink_tween: shrink_tween.kill()
+  _reset_timers()
   width = starting_width
   queue_redraw()
 
+func _reset_timers():
+  timer = 0
+  shrink_timer = 0
+  if shrink_tween: shrink_tween.kill()
+
+
 func _process(delta: float):
+  if !physics_enabled:
+    queue_redraw()
+    return
+
   timer += delta
 
   if timer > shrink_delay:

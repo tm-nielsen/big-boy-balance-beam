@@ -31,6 +31,30 @@ func _ready():
     super()
     drawer.set_radius(radius)
 
+func _physics_process(delta: float):
+    if physics_enabled:
+        super(delta)
+    else:
+        _oscillate_squish_ratio(delta)
+        _set_squish_state()
+        update_drawer_parameters()
+
+
+func start_tweened_reset(reset_tween: Tween, duration: float):
+    super(reset_tween, duration)
+    squish_reset_target = 1
+
+func reset():
+    super()
+    _reset_squish_variables()
+
+func _reset_squish_variables():
+    squish_ratio = 1
+    squish_reset_delta = 0
+    squish_reset_target = 1
+    squish_normal = Vector2.UP
+
+
 func _process_movement(delta):
     _oscillate_squish_ratio(delta)
     _set_squish_state()
