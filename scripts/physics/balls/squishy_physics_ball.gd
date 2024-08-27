@@ -10,7 +10,7 @@ extends PhysicsBall
 @export var ground_squish_reset_elasticity: float = 20
 @export var maximum_collision_jiggle: float = 0.02
 
-@onready var drawer = $Drawer
+@onready var drawer: SquishyBallDrawer = $Drawer
 
 var squish_ratio: float = 1.0
 var squish_reset_delta: float = 0.0
@@ -44,7 +44,8 @@ func _on_land(normal_velocity: Vector2):
 
 func update_drawer_parameters():
     var drawer_rotation = visual_rotation - rotation
-    drawer.update_parameters(drawer_rotation, squish_ratio, squish_normal, squish_state)
+    var rotated_squish_normal = squish_normal.rotated(-rotation)
+    drawer.update_parameters(drawer_rotation, squish_ratio, rotated_squish_normal, squish_state)
 
 
 func _oscillate_squish_ratio(delta):

@@ -31,10 +31,7 @@ func move_ball(delta):
     var delta_scale = 60 * delta
     position += velocity * delta_scale
 
-    if on_beam:
-        rotation = BalanceBeam.beam_angle
-        if velocity.dot(BalanceBeam.normal) < 0:
-            _move_to_beam()
+    rotation = BalanceBeam.beam_angle
     
     visual_rotation += velocity.x * delta_scale / radius
     if visual_rotation > TAU:
@@ -52,7 +49,6 @@ func on_beam_collision(normal_velocity: Vector2):
 
 func _on_land(normal_velocity: Vector2):
     on_beam = true
-    rotation = BalanceBeam.beam_angle
     if normal_velocity.length() > minimum_bounce_speed.y && \
             normal_velocity.dot(BalanceBeam.normal) < 0:
         velocity -= normal_velocity * elasticity
@@ -63,7 +59,6 @@ func on_no_beam_collision():
 
 func _on_leave_beam():
     on_beam = false
-    rotation = 0
 
 func _move_to_beam():
     var beam_point = BalanceBeam.get_beam_point(position)
