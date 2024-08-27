@@ -38,6 +38,11 @@ func _process_movement(delta):
     update_drawer_parameters() 
     super(delta)
 
+
+func _on_land(normal_velocity: Vector2):
+    super(normal_velocity)
+    update_drawer_parameters()
+
 func update_drawer_parameters():
     var drawer_rotation = visual_rotation - rotation
     drawer.update_parameters(drawer_rotation, squish_ratio, squish_normal, squish_state)
