@@ -30,6 +30,7 @@ script = ExtResource("1_s5gh3")
 z_index = 1
 position = Vector2(0, 40)
 script = ExtResource("2_k61rr")
+velocity_multiplier_increase_per_second = 2.0
 shrink_delay = 6.0
 shrink_amount = 40.0
 shrink_tween_duration = 0.2
@@ -37,7 +38,7 @@ shrink_tween_easing = 2
 shrink_tween_transition_type = 10
 fill_colour = Color(0.4, 0.4, 0.4, 1)
 stroke_width = 1.5
-ball_mass = 0.5
+ball_mass = 0.25
 
 [node name="PhysicsBallManager" type="Node2D" parent="."]
 script = ExtResource("1_vyn2h")
