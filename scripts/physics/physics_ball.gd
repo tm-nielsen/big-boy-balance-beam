@@ -16,15 +16,9 @@ var on_beam: bool = false
 var left_limit: float
 var right_limit: float
 
-var circle_collider: CircleShape2D = CircleShape2D.new()
-
 func _ready():
-    super()
     add_to_group(GROUP_NAME)
     compute_local_limits()
-
-    circle_collider.radius = radius + collider_cushion
-    collision_shape.shape = circle_collider
 
 func _apply_forces(delta):
     velocity.y += gravity * delta
@@ -78,25 +72,17 @@ func _move_to_beam():
 
 
 func _process_collisions(_delta):
-    for ball in get_tree().get_nodes_in_group(GROUP_NAME):
-        if ball == self:
-            continue
-        if ball.position.distance_to(position) < radius + ball.radius:
-            var _collision = collide_with(ball)
-    # for area in collision_area.get_overlapping_areas():
-    #     var parent_body = area.get_parent()
-    #     if parent_body is PhysicsObject:
-    #         var _collision = collide_with(parent_body)
-
     compute_local_limits()
     collide_with_local_limits()
 
 
-func collide_with(p_body: PhysicsObject) -> Collision:
-    var collision = super(p_body)
+func add_collision(collision: Collision):
     velocity = collision.normal * collision.speed
 
-    return collision
+    var centre_distance = collision.centre.distance_to(position)
+    if centre_distance < radius:
+        position += collision.normal * (radius - centre_distance)
+
 
 
 func compute_local_limits():

@@ -6,6 +6,10 @@ signal reset_completed
 @export var reset_lerp_scale: float = 7.5
 @export var balance_beam: BalanceBeam
 
+@export_subgroup('collisions')
+@export var collision_elasticity: float = 0.35
+@export var minimum_collision_speed: float = 0.5
+
 var physics_balls: Array[PhysicsBall]
 var ball_start_positions := []
 var ball_count: int
@@ -27,6 +31,18 @@ func _process(delta):
 
     if Input.is_action_just_pressed('reset') && OS.is_debug_build():
         reset_balls()
+
+func _physics_process(_delta: float):
+    if is_resetting:
+        return
+    
+    var ball_1 = physics_balls[0]
+    var ball_2 = physics_balls[1]
+    if ball_1.position.distance_to(ball_2.position) < ball_1.radius + ball_2.radius:
+        var collision = Collision.new(ball_1, ball_2, collision_elasticity, minimum_collision_speed)
+        ball_1.add_collision(collision)
+        collision.normal *= -1
+        ball_2.add_collision(collision)
 
 
 func reset_balls():

@@ -25,8 +25,6 @@ enum SquishState {
 }
 var squish_state = SquishState.CIRCLE
 
-var capsule_collider: CapsuleShape2D = CapsuleShape2D.new()
-
 
 func _ready():
     super()
@@ -46,11 +44,6 @@ func _on_land(normal_velocity: Vector2):
 func update_drawer_parameters():
     var drawer_rotation = visual_rotation - rotation
     drawer.update_parameters(drawer_rotation, squish_ratio, squish_normal, squish_state)
-
-
-func _process_collisions(delta):
-    update_collider()
-    super(delta)
 
 
 func _oscillate_squish_ratio(delta):
@@ -101,8 +94,8 @@ func add_jiggle(magnitude: float, direction: Vector2,
     squish_ratio += squish_reset_delta
 
 
-func collide_with(p_body:PhysicsObject) -> Collision:
-    var collision = super(p_body)
+func add_collision(collision: Collision):
+    super(collision)
 
     if squish_state == SquishState.STADIUM:
         add_jiggle(-landing_squish_elasticity * collision.speed / 20, Vector2.UP)
@@ -112,8 +105,6 @@ func collide_with(p_body:PhysicsObject) -> Collision:
         jiggle_magnitude = max(jiggle_magnitude, 0)
         add_jiggle(jiggle_magnitude, Vector2.UP if on_beam else collision.normal.rotated(PI/2))
         squish_state = SquishState.ELLIPSE
-
-    return collision
 
 
 func compute_local_limits():
@@ -137,34 +128,6 @@ func get_horizontal_limit(left: bool = false, limit_by_center_width: bool = fals
 
         _:
             return radius
-
-
-func update_collider():
-    match squish_state:
-        SquishState.CIRCLE:
-            set_collision_transform()
-            collision_shape.shape = circle_collider
-
-        SquishState.ELLIPSE:
-            set_collision_transform(squish_normal.angle(), Vector2(squish_ratio, 1 / squish_ratio))
-            collision_shape.shape = circle_collider
-
-        SquishState.STADIUM:
-            var stadium_dimensions = drawer.stadium_dimensions
-            set_collision_transform(PI / 2, Vector2.ONE, stadium_dimensions.position_offset)
-            capsule_collider.radius = stadium_dimensions.radius + collider_cushion
-            capsule_collider.height = clampf(stadium_dimensions.length, 0, INF)
-            collision_shape.shape = capsule_collider
-
-        SquishState.EGG:
-            set_collision_transform(0, Vector2.ONE / squish_ratio)
-            collision_shape.shape = circle_collider
-
-func set_collision_transform(shape_rotation: float = 0,
-        shape_scale: Vector2 = Vector2.ONE, shape_position: Vector2 = Vector2.ZERO):
-    collision_shape.position = shape_position
-    collision_shape.rotation = shape_rotation
-    collision_shape.scale = shape_scale
 
 
 func get_shadow_radius():
