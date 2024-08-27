@@ -1,6 +1,8 @@
 class_name TimeDependantBalanceBeam
 extends DrawnBalanceBeam
 
+signal shrunk()
+
 @export var velocity_multiplier_increase_per_second: float = 1
 
 @export_subgroup('shrinking', "shrink")
@@ -50,6 +52,7 @@ func _process(delta: float):
     shrink_timer += delta
     if shrink_timer > shrink_period && width > shrink_minimum:
       start_shrink_tween()
+      shrunk.emit()
       shrink_timer -= shrink_period
 
   if shrink_tween && shrink_tween.is_running():

@@ -1,6 +1,8 @@
 class_name PhysicsBallManager
 extends Node2D
 
+signal balls_collided(collision: Collision)
+
 @export_subgroup('collisions')
 @export var collision_elasticity: float = 0.35
 @export var minimum_collision_speed: float = 0.5
@@ -25,6 +27,7 @@ func _physics_process(_delta: float):
         ball_1.add_collision(collision)
         collision.normal *= -1
         ball_2.add_collision(collision)
+        balls_collided.emit(collision)
 
 
 func reset_balls():

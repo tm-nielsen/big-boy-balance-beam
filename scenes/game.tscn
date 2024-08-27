@@ -1,6 +1,7 @@
-[gd_scene load_steps=8 format=3 uid="uid://siguvig7u465"]
+[gd_scene load_steps=9 format=3 uid="uid://siguvig7u465"]
 
 [ext_resource type="Script" path="res://scripts/reset_manager.gd" id="1_e3wct"]
+[ext_resource type="Script" path="res://scripts/shaky_camera.gd" id="1_hje18"]
 [ext_resource type="Script" path="res://scripts/physics/balls/player_controller.gd" id="1_m3mpd"]
 [ext_resource type="Script" path="res://scripts/physics/stage_limits.gd" id="1_s5gh3"]
 [ext_resource type="Script" path="res://scripts/physics/balls/physics_ball_manager.gd" id="1_vyn2h"]
@@ -11,14 +12,16 @@
 [node name="Game" type="Node2D"]
 texture_filter = 1
 
-[node name="Camera2D" type="Camera2D" parent="."]
+[node name="Camera2D" type="Camera2D" parent="." node_paths=PackedStringArray("ball_manager", "balance_beam")]
+script = ExtResource("1_hje18")
+ball_manager = NodePath("../PhysicsBallManager")
+balance_beam = NodePath("../Beam")
 
 [node name="ResetManager" type="Node2D" parent="." node_paths=PackedStringArray("ball_manager", "balance_beam")]
 script = ExtResource("1_e3wct")
 ball_manager = NodePath("../PhysicsBallManager")
 balance_beam = NodePath("../Beam")
 reset_duration = 0.8
-reset_transition = 10
 
 [node name="StageLimits" type="Node2D" parent="."]
 script = ExtResource("1_s5gh3")

@@ -2,6 +2,8 @@
 class_name BalanceBeam
 extends Node2D
 
+signal slam_received(colliding_ball: PhysicsBall)
+
 static var instance: BalanceBeam
 static var beam_angle: get = _get_beam_angle
 static var normal: get = _get_normal
@@ -105,6 +107,7 @@ func collide_with_beam(ball: PhysicsBall, point: Vector2, delta: float):
     rotation_impulse *= fulcrum_displacement / width
     if 'is_dropping' in ball && ball.is_dropping:
       rotation_impulse *= ball_slam_multiplier
+      slam_received.emit(ball)
     angular_velocity += rotation_impulse * delta
     
     ball.on_beam_collision(normal_velocity)
