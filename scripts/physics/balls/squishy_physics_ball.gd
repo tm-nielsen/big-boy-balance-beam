@@ -12,10 +12,10 @@ extends PhysicsBall
 
 @onready var drawer = $Drawer
 
-var squish_ratio = 1.0
-var squish_reset_delta = 0.0
-var squish_reset_target = 1.0
-var squish_normal = Vector2.UP
+var squish_ratio: float = 1.0
+var squish_reset_delta: float = 0.0
+var squish_reset_target: float = 1.0
+var squish_normal := Vector2.UP
 
 enum SquishState {
     CIRCLE,
