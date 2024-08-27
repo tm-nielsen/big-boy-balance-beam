@@ -87,9 +87,11 @@ func collide_with_beam(ball: PhysicsBall, point: Vector2, delta: float):
     var normal_velocity = ball.velocity.project(normal)
 
     var collision_speed = normal_velocity.length()
-    var centre_distance = (point - position).dot(tangent)
+    var fulcrum_offset = (point - position).project(tangent)
+    var fulcrum_displacement = fulcrum_offset.length()
+    fulcrum_displacement *= sign(fulcrum_offset.dot(tangent))
     var rotation_impulse = ball_mass * collision_speed
-    rotation_impulse *= centre_distance / width
+    rotation_impulse *= fulcrum_displacement / width
     if 'is_dropping' in ball && ball.is_dropping:
       rotation_impulse *= ball_slam_multiplier
     angular_velocity += rotation_impulse * delta
@@ -112,6 +114,16 @@ func collide_with_elastic_point(ball: PhysicsBall, point: Vector2):
 
 func ball_intersects_point(ball: PhysicsBall, point: Vector2) -> bool:
   return (ball.position - point).length() < ball.radius
+
+static func get_velocity_at_point(point: Vector2) -> Vector2:
+  if instance: return instance._get_velocity_at_point(point)
+  return Vector2.ZERO
+
+func _get_velocity_at_point(point: Vector2) -> Vector2:
+  var fulcrum_distance = (point - position).length()
+  var orbital_speed = angular_velocity * fulcrum_distance / TAU
+  var direction = normal * sign((point - position).dot(tangent))
+  return orbital_speed * -direction
 
 
 static func _get_beam_angle() -> float:

@@ -45,10 +45,11 @@ func reset():
 
 func _on_land(normal_velocity: Vector2):
     super(normal_velocity)
-    _end_drop()
+    is_dropping = false
     if !charging_jump:
         if should_charge_jump:
             jump_charge = abs(velocity.y) / jump_speed
+            velocity = Vector2.ZERO
             _apply_jump_charge()
             squish_reset_delta = -jump_charge * (1 - charged_squish_ratio) * landing_squish_elasticity
             squish_ratio = lerpf(1, charged_squish_ratio, jump_charge)
@@ -77,7 +78,10 @@ func _charge_jump(delta):
 func _apply_jump_charge():
     charging_jump = true
 
-    velocity = velocity.project(BalanceBeam.tangent)
+    var tangent_velocity = velocity.project(BalanceBeam.tangent)
+    var beam_velocity = BalanceBeam.get_velocity_at_point(position)
+    velocity = tangent_velocity + beam_velocity
+    velocity.y += 0.05
 
     if(jump_charge > 1):
         jump_charge = 1.0
