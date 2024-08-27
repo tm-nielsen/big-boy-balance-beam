@@ -16,24 +16,27 @@ texture_filter = 1
 script = ExtResource("1_s5gh3")
 
 [node name="Beam" type="Node2D" parent="."]
+z_index = 1
 position = Vector2(0, 40)
 script = ExtResource("5_x52g1")
-max_angle_bounce = null
+height = 8.0
 fill_colour = Color(0.4, 0.4, 0.4, 1)
 stroke_width = 1.5
 
 [node name="PhysicsBallManager" type="Node2D" parent="." node_paths=PackedStringArray("balance_beam")]
 script = ExtResource("1_vyn2h")
 balance_beam = NodePath("../Beam")
+collision_elasticity = 0.6
+minimum_collision_speed = 0.1
 
 [node name="Player1" type="Node2D" parent="PhysicsBallManager"]
 position = Vector2(-40, 0)
 script = ExtResource("1_m3mpd")
-strafe_force = 16.0
+strafe_force = 12.0
 jump_charge_period = 0.15
 charged_squish_ratio = 0.5
 max_squish_ratio = 0.35
-radius = 10.0
+radius = 12.0
 minimum_bounce_speed = Vector2(2, 0.5)
 
 [node name="Drawer" type="Node2D" parent="PhysicsBallManager/Player1" node_paths=PackedStringArray("path_set_drawer")]
@@ -42,20 +45,22 @@ file_path = "res://visuals/characters/a.svg"
 path_set_drawer = NodePath("PathSetDrawer")
 fill_colour = Color(0.564706, 0.611765, 0.917647, 1)
 stroke_colour = Color(0.431373, 0.458824, 0.890196, 1)
-radius = 10.0
+radius = 12.0
 
 [node name="PathSetDrawer" type="Node2D" parent="PhysicsBallManager/Player1/Drawer"]
+z_index = 1
+z_as_relative = false
 script = ExtResource("3_mencq")
 
 [node name="Player2" type="Node2D" parent="PhysicsBallManager"]
 position = Vector2(40, 0)
 script = ExtResource("1_m3mpd")
 player_index = 2
-strafe_force = 16.0
+strafe_force = 12.0
 jump_charge_period = 0.15
 charged_squish_ratio = 0.5
 max_squish_ratio = 0.35
-radius = 10.0
+radius = 12.0
 minimum_bounce_speed = Vector2(2, 0.5)
 
 [node name="Drawer" type="Node2D" parent="PhysicsBallManager/Player2" node_paths=PackedStringArray("path_set_drawer")]
@@ -64,7 +69,9 @@ file_path = "res://visuals/characters/joker.svg"
 path_set_drawer = NodePath("PathSetDrawer")
 fill_colour = Color(0.368627, 0.321569, 0.247059, 0.701961)
 stroke_colour = Color(0.219608, 0.211765, 0.254902, 1)
-radius = 10.0
+radius = 12.0
 
 [node name="PathSetDrawer" type="Node2D" parent="PhysicsBallManager/Player2/Drawer"]
+z_index = 2
+z_as_relative = false
 script = ExtResource("3_mencq")
