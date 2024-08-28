@@ -1,6 +1,8 @@
 shader_type canvas_item;
 
 uniform float water_level = 100;
+uniform vec3 outline_colour: source_color = vec3(1.2);
+uniform float outline_width = 2;
 
 uniform float amplitude_1 = 10;
 uniform float frequency_1 = 4;
@@ -32,6 +34,9 @@ void vertex() {
 void fragment() {
   float t = wave(wavelength_1, amplitude_1, frequency_1);
   t += wave(wavelength_2, amplitude_2, frequency_2);
+  
+  float outline_step = step(position.y - outline_width, water_level + t);
+  COLOR.rgb *= outline_step * outline_colour + vec3(1.0 - outline_step);
   
   COLOR.a *= step(water_level + t, position.y);
 }

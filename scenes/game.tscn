@@ -14,6 +14,8 @@
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_lb16j"]
 shader = ExtResource("10_6n8yc")
 shader_parameter/water_level = 60.0
+shader_parameter/outline_colour = Color(1.25, 1.25, 1.25, 0.9)
+shader_parameter/outline_width = 2.5
 shader_parameter/amplitude_1 = 2.4
 shader_parameter/frequency_1 = 3.2
 shader_parameter/wavelength_1 = -120.0
@@ -28,6 +30,8 @@ shader_parameter/screen_margin = 0.25
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_e3hm2"]
 shader = ExtResource("10_6n8yc")
 shader_parameter/water_level = 60.0
+shader_parameter/outline_colour = Color(1.25, 1.25, 1.25, 0.9)
+shader_parameter/outline_width = 1.5
 shader_parameter/amplitude_1 = 1.5
 shader_parameter/frequency_1 = -4.67
 shader_parameter/wavelength_1 = -80.0
@@ -131,6 +135,7 @@ z_as_relative = false
 script = ExtResource("3_mencq")
 
 [node name="Water" type="Node2D" parent="."]
+modulate = Color(0.387, 0.631383, 0.86, 1)
 
 [node name="Front" type="MeshInstance2D" parent="Water"]
 z_index = 5
