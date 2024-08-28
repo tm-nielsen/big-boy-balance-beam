@@ -16,3 +16,5 @@ export_presets.cfg
 [Dd]ebug/
 [Rr]elease/
 [Bb]uilds/
+
+settings.ini
