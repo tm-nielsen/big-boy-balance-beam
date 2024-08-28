@@ -3,7 +3,7 @@ extends Node2D
 
 signal player_scored(player_index: int, score_increase: int)
 
-@export var fallen_ball_reset_height: float = -100
+@export var fallen_ball_reset_height: float = -120
 @export var reset_delay: float = 1
 
 @export_subgroup('references')
