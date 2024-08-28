@@ -1,0 +1,7 @@
+[gd_resource type="Theme" load_steps=2 format=3 uid="uid://b2wy1q7a4fn8u"]
+
+[ext_resource type="FontFile" uid="uid://d1n74kkv37xkt" path="res://visuals/font/Matemasie-Regular.ttf" id="1_gbi67"]
+
+[resource]
+default_font = ExtResource("1_gbi67")
+default_font_size = 24
