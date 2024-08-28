@@ -31,7 +31,6 @@ func start_reset():
   reset_tween.set_parallel(false)
   reset_tween.tween_interval(reset_duration)
   reset_tween.tween_callback(reset_completed.emit)
-  reset_tween.tween_callback(end_reset_freeze)
 
 func end_reset_freeze():
   ball_manager.reset_balls()
