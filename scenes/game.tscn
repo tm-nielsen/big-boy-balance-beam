@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=3 uid="uid://siguvig7u465"]
+[gd_scene load_steps=14 format=3 uid="uid://siguvig7u465"]
 
 [ext_resource type="Script" path="res://scripts/reset_manager.gd" id="1_e3wct"]
 [ext_resource type="Script" path="res://scripts/shaky_camera.gd" id="1_hje18"]
@@ -9,6 +9,33 @@
 [ext_resource type="Script" path="res://scripts/physics/beam/time_dependant_balance_beam.gd" id="2_k61rr"]
 [ext_resource type="Script" path="res://scripts/drawing/path_drawing/character_drawer.gd" id="2_radw7"]
 [ext_resource type="Script" path="res://scripts/drawing/path_drawing/squishy_path_set_drawer.gd" id="3_mencq"]
+[ext_resource type="Shader" path="res://visuals/shaders/waves.gdshader" id="10_6n8yc"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_lb16j"]
+shader = ExtResource("10_6n8yc")
+shader_parameter/water_level = 60.0
+shader_parameter/amplitude_1 = 2.4
+shader_parameter/frequency_1 = 3.2
+shader_parameter/wavelength_1 = -120.0
+shader_parameter/amplitude_2 = 2.0
+shader_parameter/frequency_2 = -7.11
+shader_parameter/wavelength_2 = 200.0
+shader_parameter/screen_resolution = Vector2i(240, 135)
+shader_parameter/screen_margin = 0.25
+
+[sub_resource type="QuadMesh" id="QuadMesh_b4cbx"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_e3hm2"]
+shader = ExtResource("10_6n8yc")
+shader_parameter/water_level = 60.0
+shader_parameter/amplitude_1 = 1.5
+shader_parameter/frequency_1 = -4.67
+shader_parameter/wavelength_1 = -80.0
+shader_parameter/amplitude_2 = 1.2
+shader_parameter/frequency_2 = 8.76
+shader_parameter/wavelength_2 = -180.0
+shader_parameter/screen_resolution = Vector2i(240, 135)
+shader_parameter/screen_margin = 0.25
 
 [node name="Game" type="Node2D" node_paths=PackedStringArray("reset_manager", "stage_limits")]
 texture_filter = 1
@@ -102,3 +129,16 @@ radius = 12.0
 z_index = 2
 z_as_relative = false
 script = ExtResource("3_mencq")
+
+[node name="Water" type="Node2D" parent="."]
+
+[node name="Front" type="MeshInstance2D" parent="Water"]
+z_index = 5
+material = SubResource("ShaderMaterial_lb16j")
+mesh = SubResource("QuadMesh_b4cbx")
+
+[node name="Back" type="MeshInstance2D" parent="Water"]
+modulate = Color(0.8, 0.8, 0.8, 1)
+z_index = -5
+material = SubResource("ShaderMaterial_e3hm2")
+mesh = SubResource("QuadMesh_b4cbx")
