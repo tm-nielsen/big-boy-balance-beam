@@ -1,3 +1,4 @@
+@tool
 class_name TimeDependantBalanceBeam
 extends DrawnBalanceBeam
 
@@ -42,7 +43,7 @@ func _reset_timers():
 
 
 func _process(delta: float):
-  if !physics_enabled:
+  if !physics_enabled || Engine.is_editor_hint():
     queue_redraw()
     return
 
