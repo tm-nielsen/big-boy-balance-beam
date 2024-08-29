@@ -35,6 +35,7 @@ func _physics_process(delta: float):
       dead_particles_indices.append(index)
     index += 1
     
+  dead_particles_indices.sort_custom(func(a, b): return a > b)
   for dead_index in dead_particles_indices:
     distortion_particles.remove_at(dead_index)
 
