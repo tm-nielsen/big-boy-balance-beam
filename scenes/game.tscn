@@ -53,7 +53,6 @@ shader_parameter/screen_resolution = Vector2i(240, 135)
 shader_parameter/screen_margin = Vector2(0.2, 0.5)
 
 [node name="Game" type="Node2D" node_paths=PackedStringArray("reset_manager", "stage_limits")]
-texture_filter = 1
 script = ExtResource("1_imn7p")
 reset_manager = NodePath("ResetManager")
 stage_limits = NodePath("StageLimits")
