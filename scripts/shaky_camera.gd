@@ -10,6 +10,8 @@ extends Camera2D
 @export var collision_speed_inverse_scale: float = 2
 @export var slam_impulse_inverse_scale: float = 2
 @export var beam_shrink_zoom_impulse: float = 0.05
+@export var score_speed_inverse_scale: float = 2
+@export var score_base_speed: float = 10
 
 @export_subgroup('zoom parameters', 'zoom')
 @export var zoom_elasticity: float = 0.1
@@ -18,6 +20,7 @@ extends Camera2D
 @export_subgroup('references')
 @export var ball_manager: PhysicsBallManager
 @export var balance_beam: TimeDependantBalanceBeam
+@export var stage_limits: StageLimits
 
 var velocity: Vector2
 
@@ -29,6 +32,7 @@ func _ready():
   ball_manager.balls_collided.connect(_on_balls_collided)
   balance_beam.slam_received.connect(_on_beam_slammed)
   balance_beam.shrunk.connect(_on_beam_shrunk)
+  stage_limits.bottom_threshold_reached.connect(_on_ball_scored)
 
 
 func _physics_process(delta: float):
@@ -60,6 +64,15 @@ func _on_beam_slammed(ball: PhysicsBall):
   impulse_strength /= slam_impulse_inverse_scale
   var impulse = Vector2(1, -1) * impulse_strength
   impulse.x *= BalanceBeam.normal.x
+
+  add_impulse_at_position(impulse, ball.position)
+
+
+func _on_ball_scored(ball: PhysicsBall):
+  var impulse_strength = ball.velocity.length()
+  impulse_strength = score_speed_inverse_scale
+  impulse_strength += score_base_speed
+  var impulse = Vector2.DOWN * impulse_strength
 
   add_impulse_at_position(impulse, ball.position)
 

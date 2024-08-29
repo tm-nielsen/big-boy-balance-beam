@@ -25,7 +25,7 @@ shader_parameter/amplitude_2 = 2.0
 shader_parameter/frequency_2 = -7.11
 shader_parameter/wavelength_2 = 200.0
 shader_parameter/screen_resolution = Vector2i(240, 135)
-shader_parameter/screen_margin = 0.25
+shader_parameter/screen_margin = Vector2(0.2, 0.5)
 shader_parameter/p1_distortion_point = Vector2(-40, 0)
 shader_parameter/p2_distortion_point = Vector2(40, 80)
 shader_parameter/distortion_radius = 30.0
@@ -50,7 +50,7 @@ shader_parameter/amplitude_2 = 1.2
 shader_parameter/frequency_2 = 8.76
 shader_parameter/wavelength_2 = -180.0
 shader_parameter/screen_resolution = Vector2i(240, 135)
-shader_parameter/screen_margin = 0.25
+shader_parameter/screen_margin = Vector2(0.2, 0.5)
 
 [node name="Game" type="Node2D" node_paths=PackedStringArray("reset_manager", "stage_limits")]
 texture_filter = 1
@@ -58,10 +58,12 @@ script = ExtResource("1_imn7p")
 reset_manager = NodePath("ResetManager")
 stage_limits = NodePath("StageLimits")
 
-[node name="Camera2D" type="Camera2D" parent="." node_paths=PackedStringArray("ball_manager", "balance_beam")]
+[node name="Camera2D" type="Camera2D" parent="." node_paths=PackedStringArray("ball_manager", "balance_beam", "stage_limits")]
 script = ExtResource("1_hje18")
+score_base_speed = 8.0
 ball_manager = NodePath("../PhysicsBallManager")
 balance_beam = NodePath("../Beam")
+stage_limits = NodePath("../StageLimits")
 
 [node name="ResetManager" type="Node2D" parent="." node_paths=PackedStringArray("ball_manager", "balance_beam")]
 script = ExtResource("1_e3wct")

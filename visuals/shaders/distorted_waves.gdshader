@@ -13,7 +13,7 @@ uniform float frequency_2 = 2;
 uniform float wavelength_2 = 100;
 
 uniform ivec2 screen_resolution = ivec2(240, 135);
-uniform float screen_margin: hint_range(0, 1) = 0.25;
+uniform vec2 screen_margin = vec2(0.2, 0.5);
 
 uniform vec2 p1_distortion_point;
 uniform vec2 p2_distortion_point;
@@ -53,7 +53,7 @@ vec2 get_distortion_offset()
 
 void vertex() {
   vec2 resolution = vec2(screen_resolution);
-  resolution *= (1.0 + 2.0 * screen_margin);
+  resolution *= 1.0 + 2.0 * screen_margin;
   position = (UV - 0.5) * resolution;
   VERTEX = position;
 }
