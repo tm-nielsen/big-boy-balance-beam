@@ -24,7 +24,7 @@ func start_reset():
   reset_tween.set_parallel(true)
 
   ball_manager.physics_enabled = false
-  for ball in ball_manager.physics_balls:
+  for ball in PhysicsBallManager.physics_balls:
     ball.start_tweened_reset(reset_tween, reset_duration)
   balance_beam.start_tweened_reset(reset_tween, reset_duration)
 

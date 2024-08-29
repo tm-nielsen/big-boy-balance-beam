@@ -1,4 +1,4 @@
-[gd_scene load_steps=14 format=3 uid="uid://siguvig7u465"]
+[gd_scene load_steps=16 format=3 uid="uid://siguvig7u465"]
 
 [ext_resource type="Script" path="res://scripts/reset_manager.gd" id="1_e3wct"]
 [ext_resource type="Script" path="res://scripts/shaky_camera.gd" id="1_hje18"]
@@ -10,9 +10,11 @@
 [ext_resource type="Script" path="res://scripts/drawing/path_drawing/character_drawer.gd" id="2_radw7"]
 [ext_resource type="Script" path="res://scripts/drawing/path_drawing/squishy_path_set_drawer.gd" id="3_mencq"]
 [ext_resource type="Shader" path="res://visuals/shaders/waves.gdshader" id="10_6n8yc"]
+[ext_resource type="Shader" path="res://visuals/shaders/distorted_waves.gdshader" id="10_vve22"]
+[ext_resource type="Script" path="res://scripts/physics/distorted_water.gd" id="11_w0r1a"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_lb16j"]
-shader = ExtResource("10_6n8yc")
+shader = ExtResource("10_vve22")
 shader_parameter/water_level = 60.0
 shader_parameter/outline_colour = Color(1.25, 1.25, 1.25, 0.9)
 shader_parameter/outline_width = 2.5
@@ -24,6 +26,11 @@ shader_parameter/frequency_2 = -7.11
 shader_parameter/wavelength_2 = 200.0
 shader_parameter/screen_resolution = Vector2i(240, 135)
 shader_parameter/screen_margin = 0.25
+shader_parameter/p1_distortion_point = null
+shader_parameter/p2_distortion_point = Vector2(0, 0)
+shader_parameter/distortion_radius = 30.0
+shader_parameter/p1_distortion_amount = 1.0
+shader_parameter/p2_distortion_amount = 1.0
 
 [sub_resource type="QuadMesh" id="QuadMesh_b4cbx"]
 
@@ -58,9 +65,8 @@ ball_manager = NodePath("../PhysicsBallManager")
 balance_beam = NodePath("../Beam")
 reset_duration = 0.8
 
-[node name="StageLimits" type="Node2D" parent="." node_paths=PackedStringArray("ball_manager")]
+[node name="StageLimits" type="Node2D" parent="."]
 script = ExtResource("1_s5gh3")
-ball_manager = NodePath("../PhysicsBallManager")
 
 [node name="Beam" type="Node2D" parent="."]
 z_index = 1
@@ -141,9 +147,16 @@ modulate = Color(0.387, 0.631383, 0.86, 1)
 z_index = 5
 material = SubResource("ShaderMaterial_lb16j")
 mesh = SubResource("QuadMesh_b4cbx")
+script = ExtResource("11_w0r1a")
+distortion_threshold = 60.0
+splash_particle_velocity_multiplier = 0.5
+splash_particle_bouyancy = 10.0
+splash_particle_friction_per_submergence = 0.05
 
 [node name="Back" type="MeshInstance2D" parent="Water"]
 modulate = Color(0.8, 0.8, 0.8, 1)
 z_index = -5
 material = SubResource("ShaderMaterial_e3hm2")
 mesh = SubResource("QuadMesh_b4cbx")
+
+[connection signal="bottom_threshold_reached" from="StageLimits" to="Water/Front" method="_on_stage_limits_bottom_threshold_reached"]

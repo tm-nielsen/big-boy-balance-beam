@@ -11,8 +11,6 @@ static var bottom: float
 @export var right_limit: float = 120
 @export var bottom_threshold: float = 80
 
-@export var ball_manager: PhysicsBallManager
-
 
 func _ready():
     right = right_limit
@@ -20,6 +18,6 @@ func _ready():
     bottom = bottom_threshold
 
 func _physics_process(_delta: float):
-    for ball in ball_manager.physics_balls:
+    for ball in PhysicsBallManager.physics_balls:
         if ball.position.y > bottom_threshold:
             bottom_threshold_reached.emit(ball)
