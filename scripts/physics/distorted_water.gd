@@ -44,6 +44,8 @@ func process_particle(particle: IndexedWaterParticle, delta: float) -> bool:
   gravity -= submergence * splash_particle_bouyancy
   var friction = splash_particle_friction
   friction += submergence * splash_particle_friction_per_submergence
+  if particle.velocity.y > 0:
+    friction /= 2
 
   var dead = particle.process(delta, gravity, friction)
   apply_distortion_particle(particle)
@@ -51,8 +53,6 @@ func process_particle(particle: IndexedWaterParticle, delta: float) -> bool:
 
 
 func distort_surface(ball: PlayerController):
-  if ball.position.y < distortion_threshold:
-    return
   var d = ball.position.y - distortion_threshold
   var t = clampf(d / distortion_ramp_distance, 0, 1)
 
@@ -77,7 +77,8 @@ func _on_stage_limits_bottom_threshold_reached(ball: PhysicsBall):
 
 func _make_splash_particle(ball: PlayerController) -> IndexedWaterParticle:
   var velocity = -ball.velocity * splash_particle_velocity_multiplier
-  var spawn_position = ball.position + splash_particle_offset
+  var spawn_position = Vector2(ball.position.x, StageLimits.bottom)
+  spawn_position += splash_particle_offset
 
   var particle = IndexedWaterParticle.new(splash_particle_lifetime, \
       spawn_position, velocity, screen_bounds)

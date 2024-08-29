@@ -63,10 +63,12 @@ void fragment() {
   t += wave(wavelength_2, amplitude_2, frequency_2);
   
   vec2 distortion_offset = get_distortion_offset();
-  float y_off = distortion_offset.y;
   
-  float outline_step = step(position.y - outline_width, water_level + t);
+  float y_off = distortion_offset.y;
+  y_off *= step(0, y_off);
+  
+  float outline_step = step(position.y - outline_width, water_level + y_off + t);
   COLOR.rgb *= outline_step * outline_colour + vec3(1.0 - outline_step);
   
-  COLOR.a *= step(water_level + y_off + t, position.y);
+  COLOR.a *= step(water_level + distortion_offset.y + t, position.y);
 }
