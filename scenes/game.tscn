@@ -1,4 +1,4 @@
-[gd_scene load_steps=16 format=3 uid="uid://siguvig7u465"]
+[gd_scene load_steps=17 format=3 uid="uid://siguvig7u465"]
 
 [ext_resource type="Script" path="res://scripts/reset_manager.gd" id="1_e3wct"]
 [ext_resource type="Script" path="res://scripts/shaky_camera.gd" id="1_hje18"]
@@ -33,6 +33,10 @@ shader_parameter/p1_distortion_amount = 1.0
 shader_parameter/p2_distortion_amount = 1.0
 
 [sub_resource type="QuadMesh" id="QuadMesh_b4cbx"]
+
+[sub_resource type="Curve" id="Curve_0p0la"]
+_data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(0.1, 0.1), 2.0, 2.0, 0, 0, Vector2(1, 1), 0.0, 0.0, 0, 0]
+point_count = 3
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_e3hm2"]
 shader = ExtResource("10_6n8yc")
@@ -149,8 +153,7 @@ material = SubResource("ShaderMaterial_lb16j")
 mesh = SubResource("QuadMesh_b4cbx")
 script = ExtResource("11_w0r1a")
 distortion_threshold = 60.0
-splash_particle_lifetime = 1.6
-splash_particle_velocity_multiplier = 0.9
+splash_particle_effect_curve = SubResource("Curve_0p0la")
 splash_particle_offset = Vector2(0, -10)
 splash_particle_bouyancy = 10.0
 splash_particle_friction_per_submergence = 0.05

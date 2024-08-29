@@ -6,6 +6,7 @@ extends MeshInstance2D
 
 @export_subgroup('splash', 'splash_particle')
 @export var splash_particle_lifetime: float = 2
+@export var splash_particle_effect_curve: Curve;
 @export var splash_particle_velocity_multiplier: float = 1
 @export var splash_particle_offset := Vector2(0, -20)
 @export var splash_particle_friction: float = 0.01
@@ -65,7 +66,8 @@ func apply_surface_distortion(ball: PlayerController, amount: float):
 
 func apply_distortion_particle(particle: WaterParticle):
   _set_material_distortion_parameter('point', particle.index, particle.position)
-  _set_material_distortion_parameter('amount', particle.index, particle.lifetime_ratio)
+  var distortion_amount = splash_particle_effect_curve.sample(particle.lifetime_ratio)
+  _set_material_distortion_parameter('amount', particle.index, distortion_amount)
 
 func _set_material_distortion_parameter(p_name: String, player_index: int, value):
   var parameter_name = 'p%d_distortion_' % player_index + p_name
