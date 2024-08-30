@@ -2,6 +2,7 @@ class_name GameManager
 extends Node2D
 
 signal player_scored(player_index: int, score_increase: int)
+signal lead_player_switched(player_index: int)
 
 @export var fallen_ball_reset_height: float = -120
 @export var reset_delay: float = 1
@@ -9,6 +10,8 @@ signal player_scored(player_index: int, score_increase: int)
 @export_subgroup('references')
 @export var reset_manager: ResetManager
 @export var stage_limits: StageLimits
+
+var score_offset: int
 
 var round_completed: bool
 var is_resetting: bool
@@ -34,12 +37,19 @@ func start_delayed_reset():
 func _on_bottom_threshold_reached(ball: PlayerController):
   if !round_completed:
     var scoring_player_index = 1 + ball.player_index % 2
-    player_scored.emit(scoring_player_index, 1)
+    _score(scoring_player_index)
     round_completed = true
     start_delayed_reset()
 
   ball.physics_enabled = false
   ball.position.y = fallen_ball_reset_height
+
+func _score(scoring_player_index: int):
+    player_scored.emit(scoring_player_index, 1)
+    if score_offset == 0:
+      lead_player_switched.emit(scoring_player_index)
+    score_offset += scoring_player_index * 2 - 3
+
 
 func _on_reset_completed():
   is_resetting = false

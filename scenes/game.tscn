@@ -1,4 +1,4 @@
-[gd_scene load_steps=20 format=3 uid="uid://siguvig7u465"]
+[gd_scene load_steps=21 format=3 uid="uid://siguvig7u465"]
 
 [ext_resource type="Script" path="res://scripts/reset_manager.gd" id="1_e3wct"]
 [ext_resource type="Script" path="res://scripts/shaky_camera.gd" id="1_hje18"]
@@ -13,6 +13,7 @@
 [ext_resource type="Shader" path="res://visuals/shaders/distorted_waves.gdshader" id="10_vve22"]
 [ext_resource type="Script" path="res://scripts/physics/distorted_water.gd" id="11_w0r1a"]
 [ext_resource type="Shader" path="res://visuals/shaders/crown.gdshader" id="13_dkh44"]
+[ext_resource type="Script" path="res://scripts/crown.gd" id="14_jbfb5"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_lb16j"]
 shader = ExtResource("10_vve22")
@@ -179,8 +180,11 @@ material = SubResource("ShaderMaterial_e3hm2")
 mesh = SubResource("QuadMesh_b4cbx")
 
 [node name="Crown" type="MeshInstance2D" parent="."]
+z_index = 2
 material = SubResource("ShaderMaterial_emonr")
 position = Vector2(0, 60)
 mesh = SubResource("QuadMesh_wnk81")
+script = ExtResource("14_jbfb5")
 
+[connection signal="lead_player_switched" from="." to="Crown" method="_on_lead_player_switched"]
 [connection signal="bottom_threshold_reached" from="StageLimits" to="Water/Front" method="_on_stage_limits_bottom_threshold_reached"]
