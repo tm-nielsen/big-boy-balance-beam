@@ -1,4 +1,4 @@
-[gd_scene load_steps=17 format=3 uid="uid://siguvig7u465"]
+[gd_scene load_steps=20 format=3 uid="uid://siguvig7u465"]
 
 [ext_resource type="Script" path="res://scripts/reset_manager.gd" id="1_e3wct"]
 [ext_resource type="Script" path="res://scripts/shaky_camera.gd" id="1_hje18"]
@@ -12,6 +12,7 @@
 [ext_resource type="Shader" path="res://visuals/shaders/waves.gdshader" id="10_6n8yc"]
 [ext_resource type="Shader" path="res://visuals/shaders/distorted_waves.gdshader" id="10_vve22"]
 [ext_resource type="Script" path="res://scripts/physics/distorted_water.gd" id="11_w0r1a"]
+[ext_resource type="Shader" path="res://visuals/shaders/crown.gdshader" id="13_dkh44"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_lb16j"]
 shader = ExtResource("10_vve22")
@@ -51,6 +52,16 @@ shader_parameter/frequency_2 = 8.76
 shader_parameter/wavelength_2 = -180.0
 shader_parameter/screen_resolution = Vector2i(240, 135)
 shader_parameter/screen_margin = Vector2(0.2, 0.5)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_emonr"]
+shader = ExtResource("13_dkh44")
+shader_parameter/points = 2.0
+shader_parameter/frequency = 1.0
+shader_parameter/height = 0.15
+shader_parameter/background_colour = Color(0.6, 0.6, 0.6, 1)
+
+[sub_resource type="QuadMesh" id="QuadMesh_wnk81"]
+size = Vector2(20, 12)
 
 [node name="Game" type="Node2D" node_paths=PackedStringArray("reset_manager", "stage_limits")]
 script = ExtResource("1_imn7p")
@@ -109,8 +120,9 @@ minimum_bounce_speed = Vector2(2, 0.5)
 script = ExtResource("2_radw7")
 file_path = "res://visuals/characters/classic_happy.svg"
 path_set_drawer = NodePath("PathSetDrawer")
-fill_colour = Color(0, 0, 0, 0)
-stroke_width = 2.5
+fill_colour = Color(1, 0.760784, 0, 1)
+stroke_colour = Color(0.666667, 0.2, 0, 1)
+stroke_width = 1.0
 radius = 12.0
 
 [node name="PathSetDrawer" type="Node2D" parent="PhysicsBallManager/Player1/Drawer"]
@@ -136,8 +148,9 @@ minimum_bounce_speed = Vector2(2, 0.5)
 script = ExtResource("2_radw7")
 file_path = "res://visuals/characters/classic_angry.svg"
 path_set_drawer = NodePath("PathSetDrawer")
-fill_colour = Color(0, 0, 0, 0)
-stroke_width = 2.5
+fill_colour = Color(1, 0.760784, 0, 1)
+stroke_colour = Color(0.666667, 0.2, 0, 1)
+stroke_width = 1.25
 radius = 12.0
 
 [node name="PathSetDrawer" type="Node2D" parent="PhysicsBallManager/Player2/Drawer"]
@@ -164,5 +177,10 @@ modulate = Color(0.8, 0.8, 0.8, 1)
 z_index = -5
 material = SubResource("ShaderMaterial_e3hm2")
 mesh = SubResource("QuadMesh_b4cbx")
+
+[node name="Crown" type="MeshInstance2D" parent="."]
+material = SubResource("ShaderMaterial_emonr")
+position = Vector2(0, 60)
+mesh = SubResource("QuadMesh_wnk81")
 
 [connection signal="bottom_threshold_reached" from="StageLimits" to="Water/Front" method="_on_stage_limits_bottom_threshold_reached"]
