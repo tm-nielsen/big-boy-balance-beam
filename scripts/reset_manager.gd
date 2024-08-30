@@ -12,9 +12,9 @@ signal reset_completed
 @export var reset_transition: Tween.TransitionType = Tween.TRANS_BACK
 
 
-func _process(_delta):
-  if Input.is_action_just_pressed('reset') && OS.is_debug_build():
-    start_reset()
+# func _process(_delta):
+#   if Input.is_action_just_pressed('reset') && OS.is_debug_build():
+#     start_reset()
 
 
 func start_reset():
