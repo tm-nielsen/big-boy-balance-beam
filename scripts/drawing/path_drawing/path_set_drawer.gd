@@ -2,6 +2,7 @@ class_name PathSetDrawer
 extends Node2D
 
 var paths: Array[ColouredPath] = []: set = _set_paths
+var draw_scale: float = 1.0
 
 
 func _set_paths(p_paths: Array[ColouredPath]):

@@ -211,7 +211,13 @@ func get_subdivisision_point(insert_index: int, point: Vector2) -> Vector2:
 func draw_path(draw_target: CanvasItem) -> void:
     _draw_path(draw_target, points)
 
-func _draw_path(p_draw_target: CanvasItem, p_points: PackedVector2Array) -> void:
+func _draw_path(p_draw_target: CanvasItem, p_points: PackedVector2Array, p_scale := 1.0) -> void:
+    if p_scale != 1.0:
+        var scaled_points = PackedVector2Array()
+        for i in p_points.size():
+            scaled_points.append(p_points[i] * p_scale)
+        p_points = scaled_points
+
     if p_points.size() > 2:
         p_draw_target.draw_colored_polygon(p_points, fill_colour)
 
@@ -219,4 +225,4 @@ func _draw_path(p_draw_target: CanvasItem, p_points: PackedVector2Array) -> void
         if closed:
             p_points.append(p_points[0])
 
-        p_draw_target.draw_polyline(p_points, stroke_colour, stroke_width)
+        p_draw_target.draw_polyline(p_points, stroke_colour, stroke_width * p_scale)

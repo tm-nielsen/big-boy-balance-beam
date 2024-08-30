@@ -18,6 +18,8 @@ func _ready():
         stroke_width = path_set.stroke_width
         queue_redraw()
         path_set_drawer.paths = path_set.paths
+        path_set_drawer.radius = radius
+        path_set_drawer.draw_scale = radius / path_set.body_radius
 
 
 func set_radius(p_radius: float):

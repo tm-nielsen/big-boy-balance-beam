@@ -50,9 +50,10 @@ func _calculate_shape_params():
 func _draw_path(path: ColouredPath):
     var distorted_path = PackedVector2Array()
     for i in range(path.points.size()):
-        distorted_path.append(distort_point(path.points[i]))
+        var distorted_point = distort_point(path.points[i])
+        distorted_path.append(distorted_point)
     
-    path._draw_path(self, distorted_path)
+    path._draw_path(self, distorted_path, draw_scale)
 
 
 func distort_point(point: Vector2) -> Vector2:
