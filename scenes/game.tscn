@@ -60,9 +60,12 @@ shader_parameter/points = 2.0
 shader_parameter/frequency = 1.0
 shader_parameter/height = 0.15
 shader_parameter/background_colour = Color(0.6, 0.6, 0.6, 1)
+shader_parameter/outline_width = 0.05
+shader_parameter/outline_height = 0.075
+shader_parameter/outline_colour = Color(0.45, 0.411975, 0.2745, 1)
 
 [sub_resource type="QuadMesh" id="QuadMesh_wnk81"]
-size = Vector2(20, 12)
+size = Vector2(24, 16)
 
 [node name="Game" type="Node2D" node_paths=PackedStringArray("reset_manager", "stage_limits")]
 script = ExtResource("1_imn7p")
@@ -180,6 +183,7 @@ material = SubResource("ShaderMaterial_e3hm2")
 mesh = SubResource("QuadMesh_b4cbx")
 
 [node name="Crown" type="MeshInstance2D" parent="."]
+modulate = Color(1, 0.833333, 0, 1)
 z_index = 2
 material = SubResource("ShaderMaterial_emonr")
 position = Vector2(0, 60)
