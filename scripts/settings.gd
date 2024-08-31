@@ -18,13 +18,14 @@ func _ready():
   save_settings(config)
   apply_volume_settings()
 
-func _input(_event):
+func _input(event):
   last_input_timestamp = Time.get_ticks_msec()
+  print(event)
 
 func _process(_delta):
   var time_delta = Time.get_ticks_msec() - last_input_timestamp
   var seconds_since_last_input = time_delta / 1000.0
-  if seconds_since_last_input > timeout_period:
+  if Input.is_action_just_pressed('quit') || seconds_since_last_input > timeout_period:
     get_tree().quit()
 
 
