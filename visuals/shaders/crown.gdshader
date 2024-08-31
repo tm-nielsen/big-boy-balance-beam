@@ -48,12 +48,14 @@ void fragment() {
   a += y_step;
   a *= y_cutoff;
   
-  //vec2 pos = UV / SCREEN_PIXEL_SIZE;
-  //vec2 size = vec2(1) * SCREEN_PIXEL_SIZE;
-  //pos = VERTEX;
-  //float o = step(pos.x, 20.0);
-  float o = step(UV.x, outline_width);
-  o += step(1.0 - outline_width, UV.x);
+  float x_line = UV.x - UV.y / 4.0;
+  float neg_x_line = x_line - 2.0 * UV.x; 
+  a *= step(x_line, 0.9);
+  a *= step(neg_x_line, -0.1);
+  
+  float o = 0.0;
+  o += step(0.9, x_line + outline_width);
+  o += step(-0.1, neg_x_line + outline_width);
   o += step(UV.y, outline_height);
   o += step(0.5 - mod(z, 1), outline_height * 2.0) * step(0.5 + d * height, UV.y + height + outline_height);
   o = clamp(o, 0, 1);
