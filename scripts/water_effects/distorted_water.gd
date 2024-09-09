@@ -49,7 +49,7 @@ func process_particle(particle: IndexedWaterParticle, delta: float) -> bool:
   if particle.velocity.y > 0:
     friction /= 2
 
-  var dead = particle.process(delta, gravity, friction)
+  var dead = particle.process_with_parameters(delta, gravity, friction)
   apply_distortion_particle(particle)
   return dead
 

@@ -1,4 +1,4 @@
-[gd_scene load_steps=21 format=3 uid="uid://siguvig7u465"]
+[gd_scene load_steps=27 format=3 uid="uid://siguvig7u465"]
 
 [ext_resource type="Script" path="res://scripts/reset_manager.gd" id="1_e3wct"]
 [ext_resource type="Script" path="res://scripts/shaky_camera.gd" id="1_hje18"]
@@ -11,7 +11,9 @@
 [ext_resource type="Script" path="res://scripts/drawing/path_drawing/squishy_path_set_drawer.gd" id="3_mencq"]
 [ext_resource type="Shader" path="res://visuals/shaders/waves.gdshader" id="10_6n8yc"]
 [ext_resource type="Shader" path="res://visuals/shaders/distorted_waves.gdshader" id="10_vve22"]
-[ext_resource type="Script" path="res://scripts/physics/distorted_water.gd" id="11_w0r1a"]
+[ext_resource type="Script" path="res://scripts/water_effects/distorted_water.gd" id="11_w0r1a"]
+[ext_resource type="Script" path="res://scripts/water_effects/backsplash_particles.gd" id="12_0t0ug"]
+[ext_resource type="Shader" path="res://visuals/shaders/metaballs.gdshader" id="12_2bu88"]
 [ext_resource type="Shader" path="res://visuals/shaders/crown.gdshader" id="13_dkh44"]
 [ext_resource type="Script" path="res://scripts/crown.gd" id="14_jbfb5"]
 
@@ -53,6 +55,24 @@ shader_parameter/frequency_2 = 8.76
 shader_parameter/wavelength_2 = -180.0
 shader_parameter/screen_resolution = Vector2i(240, 135)
 shader_parameter/screen_margin = Vector2(0.2, 0.5)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_j5bxo"]
+shader = ExtResource("12_2bu88")
+shader_parameter/screen_resolution = Vector2i(240, 135)
+shader_parameter/visible_ball_count = 50
+shader_parameter/ball_positions = null
+shader_parameter/ball_radii = null
+
+[sub_resource type="QuadMesh" id="QuadMesh_4wykg"]
+size = Vector2(240, 135)
+
+[sub_resource type="Curve" id="Curve_404vp"]
+_data = [Vector2(0, 0.3), 0.0, 1.4, 0, 0, Vector2(1, 1), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="Curve" id="Curve_urdxl"]
+_data = [Vector2(0, 0), 0.0, 2.97321, 0, 0, Vector2(0.121622, 0.714286), 0.991072, 0.991072, 0, 0, Vector2(1, 1), 0.0, 0.0, 0, 0]
+point_count = 3
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_emonr"]
 shader = ExtResource("13_dkh44")
@@ -182,6 +202,28 @@ z_index = -5
 material = SubResource("ShaderMaterial_e3hm2")
 mesh = SubResource("QuadMesh_b4cbx")
 
+[node name="BacksplashParticles" type="MeshInstance2D" parent="Water"]
+self_modulate = Color(0, 0, 0, 0.470588)
+z_index = -10
+material = SubResource("ShaderMaterial_j5bxo")
+mesh = SubResource("QuadMesh_4wykg")
+script = ExtResource("12_0t0ug")
+emission_count = 50
+maximum_particles = 400
+frame_rate = 60
+preprocess_time = 0.1
+lifetime_minimum = 4.0
+lifetime_maximum = 12.0
+spread = 60.0
+speed_variation_curve = SubResource("Curve_404vp")
+gravity = 15.0
+wall_contact_delay_maximum = 0.6
+wall_friction_minimum = 0.2
+wall_friction_maximum = 0.8
+particle_radius = 1.5
+wall_contact_scale = 3.0
+scale_over_lifetime_curve = SubResource("Curve_urdxl")
+
 [node name="Crown" type="MeshInstance2D" parent="."]
 modulate = Color(1, 0.833333, 0, 1)
 z_index = 2
@@ -192,3 +234,4 @@ script = ExtResource("14_jbfb5")
 
 [connection signal="lead_player_switched" from="." to="Crown" method="_on_lead_player_switched"]
 [connection signal="bottom_threshold_reached" from="StageLimits" to="Water/Front" method="_on_stage_limits_bottom_threshold_reached"]
+[connection signal="bottom_threshold_reached" from="StageLimits" to="Water/BacksplashParticles" method="_on_stage_limits_bottom_threshold_reached"]

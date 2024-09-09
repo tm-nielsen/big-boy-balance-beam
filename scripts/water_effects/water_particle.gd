@@ -20,7 +20,10 @@ func _init(_lifetime: float, _position: Vector2, \
   bounds = _bounds
 
 
-func process(delta: float, gravity: float, friction: float = 0) -> bool:
+func process(delta: float):
+  process_with_parameters(delta, 15)
+
+func process_with_parameters(delta: float, gravity: float, friction: float = 0) -> bool:
   var delta_scale = 60 * delta
   position += velocity * delta_scale
   _process_collision()
@@ -33,6 +36,8 @@ func process(delta: float, gravity: float, friction: float = 0) -> bool:
 func _process_collision():
   if position.x > bounds.end.x || position.x < bounds.position.x:
     velocity.x *= -1
+  if position.y < bounds.position.y:
+    velocity.y *= -1
 
 func _get_lifetime_ratio() -> float:
   return clampf(lifetime / _max_lifetime, 0, 1)
