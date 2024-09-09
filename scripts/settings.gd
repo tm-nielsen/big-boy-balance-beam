@@ -18,9 +18,8 @@ func _ready():
   save_settings(config)
   apply_volume_settings()
 
-func _input(event):
+func _input(_event):
   last_input_timestamp = Time.get_ticks_msec()
-  print(event)
 
 func _process(_delta):
   var time_delta = Time.get_ticks_msec() - last_input_timestamp
