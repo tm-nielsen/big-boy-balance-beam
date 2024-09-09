@@ -1,36 +1,31 @@
 class_name Crown
 extends Node2D
 
-@export_range(0, 1) var tracking_strength: float = 0.4
-@export_range(0, 1) var collection_strength: float = 0.05
 @export var offset: float = 4
-@export var lerp_strength_ramp_period: float = 2.0
+@export var reset_position := Vector2(0, -80)
 
-var lerp_target: PlayerController
-var lerp_strength: float
+@export_subgroup('tracking', 'tracking')
+@export_range(0, 1) var tracking_elasticity: float = 2.0
+@export_range(0, 1) var tracking_friction: float = 0.2
 
-var lerp_strength_ramp_tween: Tween
-
-func _ready():
-  lerp_strength = collection_strength
+var target: PlayerController
+var velocity: Vector2
 
 
 func _physics_process(delta: float):
-  if is_instance_valid(lerp_target):
+  if is_instance_valid(target):
     var delta_scale = delta * 60
-    var target_position = lerp_target.position
-    target_position.y -= lerp_target.radius + offset
-    position = lerp(position, target_position, lerp_strength * delta_scale)
+    var target_position = target.position
+    target_position.y -= target.radius + offset
+
+    velocity += (target_position - position) * tracking_elasticity
+    velocity *= (1 - tracking_friction * delta_scale)
+    
+    position += velocity * delta
 
 
 func _on_lead_player_switched(leading_player_index: int):
-  lerp_target = _get_player_ball_by_index(leading_player_index)
-  lerp_strength = collection_strength
-  if lerp_strength_ramp_tween:
-    lerp_strength_ramp_tween.kill()
-  lerp_strength_ramp_tween = create_tween()
-  lerp_strength_ramp_tween.tween_property(self, 'lerp_strength', \
-      tracking_strength, lerp_strength_ramp_period)
+  target = _get_player_ball_by_index(leading_player_index)
 
 
 func _get_player_ball_by_index(player_index: int) -> PlayerController:
@@ -38,3 +33,9 @@ func _get_player_ball_by_index(player_index: int) -> PlayerController:
     if ball.player_index == player_index:
       return ball
   return null
+
+
+func _on_stage_limits_bottom_threshold_reached(ball: PhysicsBall):
+  if ball == target:
+    position = reset_position
+    velocity = Vector2.ZERO

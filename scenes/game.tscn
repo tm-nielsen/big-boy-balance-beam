@@ -235,3 +235,4 @@ script = ExtResource("14_jbfb5")
 [connection signal="lead_player_switched" from="." to="Crown" method="_on_lead_player_switched"]
 [connection signal="bottom_threshold_reached" from="StageLimits" to="Water/Front" method="_on_stage_limits_bottom_threshold_reached"]
 [connection signal="bottom_threshold_reached" from="StageLimits" to="Water/BacksplashParticles" method="_on_stage_limits_bottom_threshold_reached"]
+[connection signal="bottom_threshold_reached" from="StageLimits" to="Crown" method="_on_stage_limits_bottom_threshold_reached"]
