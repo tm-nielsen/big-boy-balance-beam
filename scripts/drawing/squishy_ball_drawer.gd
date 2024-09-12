@@ -1,6 +1,6 @@
 @tool
 class_name SquishyBallDrawer
-extends CanvasItem
+extends Node2D
 
 @export var fill_colour := Color.WHITE
 @export var stroke_colour := Color.BLACK

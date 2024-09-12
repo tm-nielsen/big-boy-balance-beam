@@ -1,0 +1,28 @@
+[gd_scene load_steps=4 format=3 uid="uid://bhff3t7o815en"]
+
+[ext_resource type="Script" path="res://scripts/character_selection/character_selector.gd" id="1_b3odk"]
+[ext_resource type="PackedScene" uid="uid://ct8g01aqot36h" path="res://scenes/prefabs/character_name_label.tscn" id="3_8ynoy"]
+[ext_resource type="PackedScene" uid="uid://dsq45rp2r5sat" path="res://scenes/prefabs/character_preview.tscn" id="4_cy3e1"]
+
+[node name="Node2D" type="Node2D"]
+
+[node name="Camera2D" type="Camera2D" parent="."]
+
+[node name="CharacterSelector" type="Node2D" parent="."]
+position = Vector2(-40, 0)
+script = ExtResource("1_b3odk")
+preview_prefab = ExtResource("4_cy3e1")
+label_prefab = ExtResource("3_8ynoy")
+previews_on_dial = 3.0
+rect = Rect2(28, 0, -102, 123)
+fill_colour = Color(1, 1, 1, 1)
+
+[node name="CharacterSelector2" type="Node2D" parent="."]
+position = Vector2(40, 0)
+script = ExtResource("1_b3odk")
+preview_prefab = ExtResource("4_cy3e1")
+label_prefab = ExtResource("3_8ynoy")
+spin_speed = 6.0
+previews_on_dial = 3.0
+rect = Rect2(-28, 0, 102, 123)
+fill_colour = Color(1, 1, 1, 1)
