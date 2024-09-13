@@ -11,7 +11,7 @@ func _apply_forces(delta):
 
     velocity.x += strafe_force * delta * strafe_direction
 
-    should_charge_jump = is_numbered_action_pressed("charge_jump")
+    should_charge_jump = is_numbered_action_pressed("button") || is_numbered_action_pressed('down')
     
     super(delta)
 

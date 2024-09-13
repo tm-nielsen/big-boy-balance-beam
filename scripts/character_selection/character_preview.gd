@@ -69,6 +69,12 @@ func _set_squish_state(acceleration: Vector2):
     squish_state = SquishState.ELLIPSE
 
 
+func reset_squish():
+  previous_position = position
+  previous_velocity = Vector2.ZERO
+  squish_ratio = 1.0
+  squish_delta = 0
+
 
 func _set_file_path(path: String):
   drawer.file_path = path
