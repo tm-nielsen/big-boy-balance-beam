@@ -218,7 +218,7 @@ func _draw_path(p_draw_target: CanvasItem, p_points: PackedVector2Array, p_scale
             scaled_points.append(p_points[i] * p_scale)
         p_points = scaled_points
 
-    if p_points.size() > 2:
+    if p_points.size() > 2 && Geometry2D.triangulate_polygon(p_points):
         p_draw_target.draw_colored_polygon(p_points, fill_colour)
 
     if p_points.size() > 1:
