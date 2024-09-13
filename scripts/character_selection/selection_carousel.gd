@@ -19,6 +19,7 @@ extends Node2D
 @export var size := Vector2(48, 110)
 @export var curve_radius: float = 4
 @export var curve_steps: int = 6
+@export var caret_size := Vector2(4, 8)
 @export var fill_colour := Color.TRANSPARENT
 @export var border_colour := Color.BLACK
 @export var border_width: float = 2
@@ -139,6 +140,9 @@ func _draw():
   points.append(points[0])
   draw_polyline(points, border_colour, border_width)
 
+  _draw_caret(-Vector2((size.x + curve_radius) / 2, 0), 1)
+  _draw_caret(Vector2((size.x + curve_radius) / 2, 0), -1)
+
 func _get_curve_points(origin: Vector2, x_direction: float, y_direction: float) -> PackedVector2Array:
   var points = PackedVector2Array()
   origin.x -= x_direction * curve_radius / 2
@@ -149,6 +153,14 @@ func _get_curve_points(origin: Vector2, x_direction: float, y_direction: float) 
     origin.y += y_direction * size.y / curve_steps
   points.append(origin)
   return points
+
+func _draw_caret(origin: Vector2, direction: float):
+  var points = PackedVector2Array()
+  var vertical_offset = Vector2.UP * caret_size.y / 2
+  points.append(origin + vertical_offset)
+  points.append(origin + Vector2.RIGHT * direction * caret_size.x)
+  points.append(origin - vertical_offset)
+  draw_colored_polygon(points, border_colour)
 
 
 func is_numbered_action_just_pressed(simple_name: String) -> bool:
