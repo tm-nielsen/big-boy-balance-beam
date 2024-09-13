@@ -3,6 +3,7 @@ class_name SelectionCarousel
 extends Node2D
 
 @export_range(1, 2) var player_index: int = 1
+@export var clipping_margin := Vector2(24, 0)
 
 @export_subgroup('movement settings')
 @export var spin_speed: float = 6
@@ -15,7 +16,9 @@ extends Node2D
 @export var carousel_radius: float = 80
 
 @export_subgroup('drawing')
-@export var rect := Rect2(-16, 0, 32, 92)
+@export var size := Vector2(48, 110)
+@export var curve_radius: float = 4
+@export var curve_steps: int = 6
 @export var fill_colour := Color.TRANSPARENT
 @export var border_colour := Color.BLACK
 @export var border_width: float = 2
@@ -84,9 +87,9 @@ func _create_viewport() -> Node:
   viewport.canvas_item_default_texture_filter = texture_filter
   var container = SubViewportContainer.new()
   add_child(container)
-  container.position = rect.position
-  container.position.y += (border_width - rect.size.y) / 2
-  container.size = rect.size - Vector2.ONE * border_width
+  container.position = -(size + clipping_margin) / 2
+  container.position.y += border_width / 2
+  container.size = size + clipping_margin - Vector2.ONE * border_width
   container.stretch = true
   container.add_child(viewport)
   return viewport
@@ -99,7 +102,7 @@ func _move_items():
     _move_item(i)
 
 func _move_item(index: int):
-  var centre = -rect.position + Vector2.DOWN * rect.size.y / 2
+  var centre = (size + clipping_margin) / 2
   items[index].position = centre + _get_displacement(index)
 
 
@@ -128,10 +131,24 @@ func _get_selected_index() -> int:
 
 
 func _draw():
-  var offset_rect = rect
-  offset_rect.position.y -= rect.size.y / 2
-  draw_rect(offset_rect, fill_colour)
-  draw_rect(offset_rect, border_colour, false, border_width)
+  var points = PackedVector2Array()
+  points.append_array(_get_curve_points(-size / 2, -1, 1))
+  points.append_array(_get_curve_points(size / 2, 1, -1))
+  
+  draw_colored_polygon(points, fill_colour)
+  points.append(points[0])
+  draw_polyline(points, border_colour, border_width)
+
+func _get_curve_points(origin: Vector2, x_direction: float, y_direction: float) -> PackedVector2Array:
+  var points = PackedVector2Array()
+  origin.x -= x_direction * curve_radius / 2
+  for i in curve_steps:
+    var p = origin
+    p.x += x_direction * curve_radius * sin(PI * i / curve_steps)
+    points.append(p)
+    origin.y += y_direction * size.y / curve_steps
+  points.append(origin)
+  return points
 
 
 func is_numbered_action_just_pressed(simple_name: String) -> bool:

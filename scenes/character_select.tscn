@@ -13,13 +13,14 @@ script = ExtResource("1_b3odk")
 preview_prefab = ExtResource("4_cy3e1")
 carousel_item_count = 2.0
 carousel_radius = 60.0
-rect = Rect2(-24, 0, 48, 111)
+size = Vector2(36, 100)
 fill_colour = Color(1, 1, 1, 0.588235)
+border_colour = Color(0.1, 0.1, 0.1, 1)
 
 [node name="CharacterSelector2" type="Node2D" parent="."]
 position = Vector2(40, 0)
 script = ExtResource("1_b3odk")
 preview_prefab = ExtResource("4_cy3e1")
 player_index = 2
-rect = Rect2(-28, 0, 102, 123)
+clipping_margin = Vector2(12, 0)
 fill_colour = Color(1, 1, 1, 1)
