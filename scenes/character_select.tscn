@@ -11,6 +11,8 @@
 position = Vector2(-40, 0)
 script = ExtResource("1_b3odk")
 preview_prefab = ExtResource("4_cy3e1")
+carousel_item_count = 2.0
+carousel_radius = 60.0
 rect = Rect2(-24, 0, 48, 111)
 fill_colour = Color(1, 1, 1, 0.588235)
 

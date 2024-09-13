@@ -4,7 +4,10 @@ extends SelectionCarousel
 
 signal character_selected(file_path: String)
 
+@export_subgroup('preview settings', 'preview')
 @export var preview_prefab: PackedScene
+@export var preview_radius: float = 12
+@export var preview_edge_radius: float = 6
 
 @export_subgroup('directories')
 @export_dir var local_character_path := 'res://visuals/characters'
@@ -13,9 +16,9 @@ signal character_selected(file_path: String)
 var character_file_paths: Array[String]
 
 
-func _create_items():
+func _create_items(parent_node: Node):
   character_file_paths = _get_file_paths()
-  items = _create_previews(character_file_paths)
+  items = _create_previews(character_file_paths, parent_node)
   
 
 func _get_file_paths() -> Array[String]:
@@ -43,23 +46,32 @@ func _get_paths_in_directory(directory_path: String) -> Array[String]:
   return file_paths
 
 
-func _create_previews(file_paths: Array[String]) -> Array[CharacterPreview]:
+func _create_previews(file_paths: Array[String], parent: Node) -> Array[CharacterPreview]:
   var character_previews: Array[CharacterPreview] = []
   for file_path in file_paths:
-    character_previews.append(_create_preview(file_path))
+    var preview_node = _create_preview(file_path, parent)
+    character_previews.append(preview_node)
   _move_items()
   _reset_preview_jiggle()
   return character_previews
 
-func _create_preview(file_path: String) -> CharacterPreview:
+func _create_preview(file_path: String, parent: Node) -> CharacterPreview:
   var new_preview = preview_prefab.instantiate()
-  clipping_parent.add_child(new_preview)
+  parent.add_child(new_preview)
   new_preview.file_path = file_path
   return new_preview
 
 func _reset_preview_jiggle():
   for character_preview in items:
     character_preview.reset_squish()
+
+
+func _move_item(index: int):
+  super(index)
+  var carousel_offset = abs(_get_carousel_offset(index))
+  items[index].z_index = ceil(item_count / 2.0) - carousel_offset
+  var normalized_offset = _normalize_carousel_offset(carousel_offset)
+  items[index].radius = lerpf(preview_radius, preview_edge_radius, normalized_offset)
 
 
 func _select_item():

@@ -20,8 +20,6 @@ extends Node2D
 @export var border_colour := Color.BLACK
 @export var border_width: float = 2
 
-var clipping_parent: Sprite2D
-
 var items := []
 
 var item_count: int
@@ -33,8 +31,8 @@ var selected_index: int: get = _get_selected_index
 
 
 func _ready():
-  _create_clipping_parent()
-  _create_items()
+  var viewport = _create_viewport()
+  _create_items(viewport)
   item_count = items.size()
 
 func _process(delta: float):
@@ -80,33 +78,47 @@ func _spin_to_selected_index(delta: float):
     selection_rotation += selection_velocity * delta
 
 
-func _create_clipping_parent():
-  clipping_parent = Sprite2D.new()
-  var clip_texture = PlaceholderTexture2D.new()
-  clip_texture.size = abs(rect.size) - Vector2.ONE * border_width
-  clipping_parent.texture = clip_texture
-  clipping_parent.clip_children = CanvasItem.CLIP_CHILDREN_ONLY
-  add_child(clipping_parent)
-  var pos = rect.get_center() + Vector2.UP * rect.size.y / 2
-  clipping_parent.position = pos
+func _create_viewport() -> Node:
+  var viewport = SubViewport.new()
+  viewport.transparent_bg = true
+  viewport.canvas_item_default_texture_filter = texture_filter
+  var container = SubViewportContainer.new()
+  add_child(container)
+  container.position = rect.position
+  container.position.y += (border_width - rect.size.y) / 2
+  container.size = rect.size - Vector2.ONE * border_width
+  container.stretch = true
+  container.add_child(viewport)
+  return viewport
+
+func _create_items(_parent_node: Node): pass
 
 
 func _move_items():
   for i in item_count:
-    var pos = _get_global_position_by_index(i)
-    items[i].global_position = pos
+    _move_item(i)
 
-func _create_items(): pass
+func _move_item(index: int):
+  var centre = -rect.position + Vector2.DOWN * rect.size.y / 2
+  items[index].position = centre + _get_displacement(index)
 
-func _get_global_position_by_index(index: int) -> Vector2:
-  if selection_rotation - index < -item_count / 2.0:
-    index -= item_count
-  elif index - selection_rotation < -item_count / 2.0:
-    index += item_count
-  var t = (index - selection_rotation) / carousel_item_count
+
+func _get_carousel_offset(index: int) -> float:
+  var offset = index - selection_rotation
+  return wrapf(offset, -item_count / 2.0, item_count / 2.0)
+
+func _get_normalized_carousel_offset(index: int) -> float:
+  var offset = _get_carousel_offset(index)
+  return _normalize_carousel_offset(offset)
+
+func _normalize_carousel_offset(offset: float) -> float:
+  var t = offset / carousel_item_count
   t = clampf(t, -1, 1)
-  t = sin(0.5 * PI * t)
-  return global_position + Vector2(0, t * carousel_radius)
+  return sin(0.5 * PI * t)
+
+func _get_displacement(index: int) -> Vector2:
+  var carousel_offset = _get_normalized_carousel_offset(index)
+  return Vector2(0, carousel_offset * carousel_radius)
 
 
 func _get_selected_index() -> int:

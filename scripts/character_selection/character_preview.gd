@@ -4,7 +4,7 @@ extends Node2D
 
 var SquishState = SquishyPhysicsBall.SquishState
 
-@export var radius: float = 12
+@export var radius: float = 12: set = _set_radius
 
 @export_subgroup("movement")
 @export var acceleration_mutliplier: float = 0.1
@@ -78,3 +78,7 @@ func reset_squish():
 
 func _set_file_path(path: String):
   drawer.file_path = path
+
+func _set_radius(r: float):
+  radius = r
+  drawer.radius = r
