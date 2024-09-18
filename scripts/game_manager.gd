@@ -2,8 +2,9 @@ class_name GameManager
 extends Node2D
 
 signal round_won(player_index: int)
+signal state_changed(new_state: GameState)
 
-enum GameState {CHARACTER_SELECTION, FROZEN, GAMEPLAY, RESETTING}
+enum GameState {CHARACTER_SELECTION, FROZEN, GAMEPLAY, RESET_DELAY, RESETTING}
 
 @export var fallen_ball_reset_height: float = -120
 @export var reset_delay: float = 1
@@ -17,7 +18,7 @@ enum GameState {CHARACTER_SELECTION, FROZEN, GAMEPLAY, RESETTING}
 
 var score_offset: int
 
-var state := GameState.CHARACTER_SELECTION
+var state := GameState.CHARACTER_SELECTION: set = _set_state
 
 
 func _ready():
@@ -36,10 +37,14 @@ func _process(_delta: float):
 
 
 func start_delayed_reset():
-  state = GameState.RESETTING
+  state = GameState.RESET_DELAY
   var reset_tween = create_tween()
   reset_tween.tween_interval(reset_delay)
-  reset_tween.tween_callback(reset_manager.start_reset)
+  reset_tween.tween_callback(_start_reset)
+
+func _start_reset():
+  state = GameState.RESETTING
+  reset_manager.start_reset()
 
 
 func _on_bottom_threshold_reached(ball: PlayerController):
@@ -85,3 +90,7 @@ func _is_character_selection_active() -> bool:
   for selector in character_selectors:
     if selector.is_selecting: return true
   return false
+
+func _set_state(new_state: GameState):
+  state = new_state
+  state_changed.emit(state)

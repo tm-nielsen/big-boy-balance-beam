@@ -1,7 +1,36 @@
-[gd_scene load_steps=3 format=3 uid="uid://dd78ryax26485"]
+[gd_scene load_steps=10 format=3 uid="uid://dd78ryax26485"]
 
 [ext_resource type="Theme" uid="uid://b2wy1q7a4fn8u" path="res://visuals/ui_theme.tres" id="1_2pr5f"]
 [ext_resource type="PackedScene" uid="uid://siguvig7u465" path="res://scenes/game.tscn" id="1_3x1t2"]
+[ext_resource type="Shader" path="res://visuals/shaders/rewind_static.gdshader" id="2_priph"]
+[ext_resource type="Script" path="res://scripts/rewind_effect.gd" id="3_2m04s"]
+
+[sub_resource type="Gradient" id="Gradient_4jya7"]
+interpolation_mode = 1
+offsets = PackedFloat32Array(0, 0.361446, 0.493976, 1)
+colors = PackedColorArray(0, 0, 0, 1, 0.259036, 0.259036, 0.259036, 1, 0.722892, 0.722892, 0.722892, 1, 1, 1, 1, 1)
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_hrtb1"]
+noise_type = 0
+frequency = 0.1
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_h0o56"]
+height = 288
+seamless = true
+color_ramp = SubResource("Gradient_4jya7")
+noise = SubResource("FastNoiseLite_hrtb1")
+
+[sub_resource type="ViewportTexture" id="ViewportTexture_kxy2f"]
+viewport_path = NodePath("GameViewportContainer/GameViewport")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_m7sfj"]
+resource_local_to_scene = true
+shader = ExtResource("2_priph")
+shader_parameter/warp_amount = 0.5
+shader_parameter/noise_amount = 0.2
+shader_parameter/noise_speed = 8.0
+shader_parameter/viewport_texture = SubResource("ViewportTexture_kxy2f")
+shader_parameter/noise = SubResource("NoiseTexture2D_h0o56")
 
 [node name="Root" type="Control"]
 layout_mode = 3
@@ -22,6 +51,7 @@ grow_vertical = 2
 color = Color(0.133333, 0.133333, 0.133333, 1)
 
 [node name="GameViewportContainer" type="SubViewportContainer" parent="."]
+material = SubResource("ShaderMaterial_m7sfj")
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -29,6 +59,7 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 stretch = true
+script = ExtResource("3_2m04s")
 
 [node name="GameViewport" type="SubViewport" parent="GameViewportContainer"]
 disable_3d = true
@@ -38,3 +69,5 @@ size = Vector2i(240, 135)
 render_target_update_mode = 4
 
 [node name="Game" parent="GameViewportContainer/GameViewport" instance=ExtResource("1_3x1t2")]
+
+[connection signal="state_changed" from="GameViewportContainer/GameViewport/Game" to="GameViewportContainer" method="_on_game_state_changed"]

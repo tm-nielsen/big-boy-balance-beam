@@ -1,4 +1,4 @@
-[gd_scene load_steps=30 format=3 uid="uid://siguvig7u465"]
+[gd_scene load_steps=29 format=3 uid="uid://siguvig7u465"]
 
 [ext_resource type="Script" path="res://scripts/reset_manager.gd" id="1_e3wct"]
 [ext_resource type="Script" path="res://scripts/shaky_camera.gd" id="1_hje18"]
@@ -88,9 +88,6 @@ shader_parameter/outline_colour = Color(0.45, 0.411975, 0.2745, 1)
 
 [sub_resource type="QuadMesh" id="QuadMesh_wnk81"]
 size = Vector2(24, 16)
-
-[sub_resource type="QuadMesh" id="QuadMesh_7oapw"]
-size = Vector2(300, 200)
 
 [node name="Game" type="Node2D" node_paths=PackedStringArray("reset_manager", "round_manager", "stage_limits", "character_selectors")]
 texture_filter = 1
@@ -190,7 +187,7 @@ radius = 12.0
 modulate = Color(0.387, 0.631383, 0.86, 1)
 
 [node name="Front" type="MeshInstance2D" parent="Water"]
-z_index = 5
+z_index = 3
 material = SubResource("ShaderMaterial_lb16j")
 mesh = SubResource("QuadMesh_b4cbx")
 script = ExtResource("11_w0r1a")
@@ -238,11 +235,6 @@ script = ExtResource("14_jbfb5")
 
 [node name="CharacterSelection" type="Node2D" parent="."]
 z_index = 5
-
-[node name="Background" type="MeshInstance2D" parent="CharacterSelection"]
-visible = false
-modulate = Color(1, 1, 1, 0.588235)
-mesh = SubResource("QuadMesh_7oapw")
 
 [node name="P1Selector" parent="CharacterSelection" node_paths=PackedStringArray("player_target") instance=ExtResource("17_bj4qq")]
 position = Vector2(-40, 0)
