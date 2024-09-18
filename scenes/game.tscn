@@ -199,13 +199,13 @@ splash_particle_friction_per_submergence = 0.05
 
 [node name="Back" type="MeshInstance2D" parent="Water"]
 modulate = Color(0.8, 0.8, 0.8, 1)
-z_index = -5
+z_index = -1
 material = SubResource("ShaderMaterial_e3hm2")
 mesh = SubResource("QuadMesh_b4cbx")
 
 [node name="BacksplashParticles" type="MeshInstance2D" parent="Water"]
 self_modulate = Color(0, 0, 0, 0.470588)
-z_index = -10
+z_index = -2
 material = SubResource("ShaderMaterial_j5bxo")
 mesh = SubResource("QuadMesh_4wykg")
 script = ExtResource("12_0t0ug")
