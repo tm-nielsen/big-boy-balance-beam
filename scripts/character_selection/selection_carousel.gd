@@ -105,13 +105,17 @@ func _create_viewport() -> Node:
 func _create_items(_parent_node: Node): pass
 
 
-func _move_items():
+func _move_items(ignore_velocity := false):
   for i in item_count:
-    _move_item(i)
+    _move_item(i, ignore_velocity)
 
-func _move_item(index: int):
+func _move_item(index: int, ignore_velocity := false):
   var centre = (size + clipping_margin) / 2
-  items[index].position = centre + _get_displacement(index)
+  var new_position = centre + _get_displacement(index)
+  if ignore_velocity:
+    items[index].move_without_squish(new_position)
+  else:
+    items[index].position = new_position
 
 
 func _get_carousel_offset(index: int) -> float:
@@ -138,12 +142,14 @@ func _hide_item(index: int):
   items.remove_at(index)
   item_count -= 1
   hidden_index = index
+  _move_items(true)
 
 func _unhide_item():
   if hidden_item:
     hidden_item.show()
     items.insert(hidden_index, hidden_item)
     item_count += 1
+  _move_items(true)
 
 
 func _get_selected_index() -> int:

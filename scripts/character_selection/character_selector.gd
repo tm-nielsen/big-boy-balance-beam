@@ -72,8 +72,7 @@ func _create_previews(file_paths: Array[String], parent: Node) -> Array[Characte
   for file_path in file_paths:
     var preview_node = _create_preview(file_path, parent)
     character_previews.append(preview_node)
-  _move_items()
-  _reset_preview_jiggle()
+  _move_items(true)
   return character_previews
 
 func _create_preview(file_path: String, parent: Node) -> CharacterPreview:
@@ -82,13 +81,9 @@ func _create_preview(file_path: String, parent: Node) -> CharacterPreview:
   new_preview.file_path = file_path
   return new_preview
 
-func _reset_preview_jiggle():
-  for character_preview in items:
-    character_preview.reset_squish()
 
-
-func _move_item(index: int):
-  super(index)
+func _move_item(index: int, ignore_velocity := false):
+  super(index, ignore_velocity)
   var carousel_offset = abs(_get_carousel_offset(index))
   items[index].z_index = ceil(item_count / 2.0) - carousel_offset
   var normalized_offset = _normalize_carousel_offset(carousel_offset)

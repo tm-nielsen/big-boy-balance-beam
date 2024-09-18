@@ -18,8 +18,8 @@ var SquishState = SquishyPhysicsBall.SquishState
 var drawer: CharacterDrawer
 var file_path: String: set = _set_file_path
 
-var squish_ratio: float
-var squish_delta: float
+var squish_ratio: float = 1
+var squish_delta: float = 0
 var squish_normal := Vector2.ONE
 var squish_state: int
 
@@ -68,6 +68,10 @@ func _set_squish_state(acceleration: Vector2):
   elif squish_state < 1:
     squish_state = SquishState.ELLIPSE
 
+
+func move_without_squish(new_position: Vector2):
+  position = new_position
+  previous_position = new_position - previous_velocity
 
 func reset_squish():
   previous_position = position
