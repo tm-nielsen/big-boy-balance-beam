@@ -2,7 +2,7 @@
 class_name CharacterPreview
 extends Node2D
 
-var SquishState = SquishyPhysicsBall.SquishState
+const SquishState = SquishyPhysicsBall.SquishState
 
 @export var radius: float = 12: set = _set_radius
 
@@ -21,7 +21,7 @@ var file_path: String: set = _set_file_path
 var squish_ratio: float = 1
 var squish_delta: float = 0
 var squish_normal := Vector2.ONE
-var squish_state: int
+var squish_state: SquishState
 
 var previous_velocity: Vector2
 var previous_position: Vector2
@@ -83,7 +83,7 @@ func reset_squish():
 func apply_squish_to_physics_ball(ball: SquishyPhysicsBall):
   ball.squish_ratio = squish_ratio
   ball.squish_reset_delta = squish_delta
-  ball.squish_state = SquishState.get(SquishState.keys()[squish_state])
+  ball.squish_state = squish_state
 
 
 func _set_file_path(path: String):
