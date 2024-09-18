@@ -2,7 +2,8 @@
 class_name CharacterSelector
 extends SelectionCarousel
 
-signal character_selected(player_node)
+signal selection_started
+signal character_selected(file_path: String)
 
 @export var player_target: PlayerController
 
@@ -23,8 +24,17 @@ func start_selecting():
   is_selecting = true
   explicitly_selected_index = -1
   selection_rotation = 0
-  show()
   player_target.hide()
+  show()
+  selection_started.emit()
+
+
+func hide_character(path: String):
+  var index = 0
+  for i in item_count:
+    if items[i].file_path == path:
+      index = i
+  _hide_item(index)
 
 
 func _create_items(parent_node: Node):
@@ -86,13 +96,12 @@ func _move_item(index: int):
 
 
 func _select_item():
-  var selected_filepath = character_file_paths[selected_index]
-  player_target.drawer.file_path = selected_filepath
-  is_selecting = false
-
   var selected_preview = items[selected_index]
   selected_preview.apply_squish_to_physics_ball(player_target)
+  var selected_filepath = selected_preview.file_path
+  player_target.drawer.file_path = selected_filepath
   player_target.position = position + _get_displacement(selected_index)
   player_target.show()
-  character_selected.emit(player_target)
+  character_selected.emit(selected_filepath)
+  is_selecting = false
   hide()

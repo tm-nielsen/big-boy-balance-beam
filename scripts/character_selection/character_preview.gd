@@ -83,6 +83,7 @@ func apply_squish_to_physics_ball(ball: SquishyPhysicsBall):
 
 
 func _set_file_path(path: String):
+  file_path = path
   drawer.file_path = path
 
 func _set_radius(r: float):

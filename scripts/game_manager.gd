@@ -25,7 +25,8 @@ func _ready():
   stage_limits.bottom_threshold_reached.connect(_on_bottom_threshold_reached)
   reset_manager.freeze()
   for selector in character_selectors:
-    selector.character_selected.connect(_on_character_selected)
+    var on_select = _on_character_selected.bind(selector.player_target)
+    selector.character_selected.connect(on_select)
     selector.start_selecting()
 
 func _process(_delta: float):
@@ -77,7 +78,7 @@ func _on_reset_completed():
         state = GameState.FROZEN
 
 
-func _on_character_selected(player_node):
+func _on_character_selected(_file_path, player_node: PlayerController):
   reset_manager.reset_ball(player_node)
 
 func _is_character_selection_active() -> bool:

@@ -24,6 +24,7 @@ extends Node2D
 @export var border_colour := Color.BLACK
 @export var border_width: float = 2
 
+var item_viewport: Viewport
 var items := []
 
 var item_count: int
@@ -33,10 +34,13 @@ var selection_velocity: float
 var explicitly_selected_index: int = -1
 var selected_index: int: get = _get_selected_index
 
+var hidden_index: int = -1
+var hidden_item: CanvasItem
+
 
 func _ready():
-  var viewport = _create_viewport()
-  _create_items(viewport)
+  item_viewport = _create_viewport()
+  _create_items(item_viewport)
   item_count = items.size()
 
 func _process(delta: float):
@@ -126,6 +130,20 @@ func _normalize_carousel_offset(offset: float) -> float:
 func _get_displacement(index: int) -> Vector2:
   var carousel_offset = _get_normalized_carousel_offset(index)
   return Vector2(0, carousel_offset * carousel_radius)
+
+
+func _hide_item(index: int):
+  hidden_item = items[index]
+  hidden_item.hide()
+  items.remove_at(index)
+  item_count -= 1
+  hidden_index = index
+
+func _unhide_item():
+  if hidden_item:
+    hidden_item.show()
+    items.insert(hidden_index, hidden_item)
+    item_count += 1
 
 
 func _get_selected_index() -> int:

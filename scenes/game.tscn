@@ -123,7 +123,6 @@ win_threshold = 3
 light_prefab = ExtResource("18_8b4re")
 light_placement_area = Rect2(36, -52, 68, 0)
 light_grid_columns = 4
-replace_lights = false
 
 [node name="Beam" type="Node2D" parent="."]
 z_index = 1
@@ -258,3 +257,7 @@ player_index = 2
 [connection signal="bottom_threshold_reached" from="StageLimits" to="Water/Front" method="_on_stage_limits_bottom_threshold_reached"]
 [connection signal="bottom_threshold_reached" from="StageLimits" to="Water/BacksplashParticles" method="_on_stage_limits_bottom_threshold_reached"]
 [connection signal="bottom_threshold_reached" from="StageLimits" to="Crown" method="_on_stage_limits_bottom_threshold_reached"]
+[connection signal="character_selected" from="CharacterSelection/P1Selector" to="CharacterSelection/P2Selector" method="hide_character"]
+[connection signal="selection_started" from="CharacterSelection/P1Selector" to="CharacterSelection/P2Selector" method="_unhide_item"]
+[connection signal="character_selected" from="CharacterSelection/P2Selector" to="CharacterSelection/P1Selector" method="hide_character"]
+[connection signal="selection_started" from="CharacterSelection/P2Selector" to="CharacterSelection/P1Selector" method="_unhide_item"]
