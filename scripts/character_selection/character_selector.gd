@@ -16,9 +16,11 @@ signal character_selected(player_node)
 @export_dir var extra_characters_path := 'characters'
 
 var character_file_paths: Array[String]
+var is_selecting: bool
 
 
 func start_selecting():
+  is_selecting = true
   explicitly_selected_index = -1
   selection_rotation = 0
   show()
@@ -86,12 +88,11 @@ func _move_item(index: int):
 func _select_item():
   var selected_filepath = character_file_paths[selected_index]
   player_target.drawer.file_path = selected_filepath
+  is_selecting = false
 
   var selected_preview = items[selected_index]
-  player_target.squish_ratio = selected_preview.squish_ratio
-  player_target.squish_reset_delta = selected_preview.squish_delta
-  player_target.squish_state = selected_preview.squish_state
-  player_target.position = position
+  selected_preview.apply_squish_to_physics_ball(player_target)
+  player_target.position = position + _get_displacement(selected_index)
   player_target.show()
   character_selected.emit(player_target)
   hide()

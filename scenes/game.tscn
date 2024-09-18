@@ -1,4 +1,4 @@
-[gd_scene load_steps=28 format=3 uid="uid://siguvig7u465"]
+[gd_scene load_steps=30 format=3 uid="uid://siguvig7u465"]
 
 [ext_resource type="Script" path="res://scripts/reset_manager.gd" id="1_e3wct"]
 [ext_resource type="Script" path="res://scripts/shaky_camera.gd" id="1_hje18"]
@@ -16,6 +16,8 @@
 [ext_resource type="Shader" path="res://visuals/shaders/crown.gdshader" id="13_dkh44"]
 [ext_resource type="Script" path="res://scripts/crown.gd" id="14_jbfb5"]
 [ext_resource type="PackedScene" uid="uid://dy63n5m0j3xh2" path="res://scenes/prefabs/character_selector.tscn" id="17_bj4qq"]
+[ext_resource type="Script" path="res://scripts/round_manager.gd" id="17_bo278"]
+[ext_resource type="PackedScene" uid="uid://d0sr38vvbbgsc" path="res://scenes/prefabs/scoring_light.tscn" id="18_8b4re"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_lb16j"]
 shader = ExtResource("10_vve22")
@@ -90,10 +92,11 @@ size = Vector2(24, 16)
 [sub_resource type="QuadMesh" id="QuadMesh_7oapw"]
 size = Vector2(300, 200)
 
-[node name="Game" type="Node2D" node_paths=PackedStringArray("reset_manager", "stage_limits", "character_selectors")]
+[node name="Game" type="Node2D" node_paths=PackedStringArray("reset_manager", "round_manager", "stage_limits", "character_selectors")]
 texture_filter = 1
 script = ExtResource("1_imn7p")
 reset_manager = NodePath("ResetManager")
+round_manager = NodePath("RoundManager")
 stage_limits = NodePath("StageLimits")
 character_selectors = [NodePath("CharacterSelection/P1Selector"), NodePath("CharacterSelection/P2Selector")]
 
@@ -112,6 +115,15 @@ reset_duration = 0.8
 
 [node name="StageLimits" type="Node2D" parent="."]
 script = ExtResource("1_s5gh3")
+
+[node name="RoundManager" type="Node2D" parent="."]
+z_index = -5
+script = ExtResource("17_bo278")
+win_threshold = 3
+light_prefab = ExtResource("18_8b4re")
+light_placement_area = Rect2(36, -52, 68, 0)
+light_grid_columns = 4
+replace_lights = false
 
 [node name="Beam" type="Node2D" parent="."]
 z_index = 1
@@ -242,7 +254,7 @@ position = Vector2(40, 0)
 player_target = NodePath("../../PhysicsBallManager/Player2")
 player_index = 2
 
-[connection signal="lead_player_switched" from="." to="Crown" method="_on_lead_player_switched"]
+[connection signal="round_won" from="." to="Crown" method="_on_round_won"]
 [connection signal="bottom_threshold_reached" from="StageLimits" to="Water/Front" method="_on_stage_limits_bottom_threshold_reached"]
 [connection signal="bottom_threshold_reached" from="StageLimits" to="Water/BacksplashParticles" method="_on_stage_limits_bottom_threshold_reached"]
 [connection signal="bottom_threshold_reached" from="StageLimits" to="Crown" method="_on_stage_limits_bottom_threshold_reached"]

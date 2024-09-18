@@ -24,7 +24,7 @@ func _physics_process(delta: float):
     position += velocity * delta
 
 
-func _on_lead_player_switched(leading_player_index: int):
+func _on_round_won(leading_player_index: int):
   target = _get_player_ball_by_index(leading_player_index)
 
 

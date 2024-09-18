@@ -1,0 +1,15 @@
+[gd_scene load_steps=2 format=3 uid="uid://d0sr38vvbbgsc"]
+
+[ext_resource type="Script" path="res://scripts/scoring_light.gd" id="1_3fyth"]
+
+[node name="ScoringLight" type="Node2D"]
+script = ExtResource("1_3fyth")
+stroke_width = 3.0
+on = true
+off_fill_colour = Color(0.75, 0.75, 0.75, 0.588235)
+off_stroke_colour = Color(0.66, 0.66, 0.66, 0.588235)
+on_fill_colour = Color(0.45, 1, 0.4, 0.588235)
+on_stroke_colour = Color(0.266667, 1, 0.2, 1)
+on_tween_duration = 0.3
+flash_radius = 14.0
+flash_tween_duration = 0.15

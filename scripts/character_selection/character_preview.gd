@@ -76,6 +76,12 @@ func reset_squish():
   squish_delta = 0
 
 
+func apply_squish_to_physics_ball(ball: SquishyPhysicsBall):
+  ball.squish_ratio = squish_ratio
+  ball.squish_reset_delta = squish_delta
+  ball.squish_state = squish_state
+
+
 func _set_file_path(path: String):
   drawer.file_path = path
 
