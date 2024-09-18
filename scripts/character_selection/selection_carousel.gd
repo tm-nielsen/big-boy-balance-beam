@@ -57,12 +57,14 @@ func _process_movement(delta: float):
       selection_velocity += selection_impulse
       if explicitly_selected_index >= item_count:
         explicitly_selected_index -= item_count
+      if selection_rotation > explicitly_selected_index:
         selection_rotation -= item_count
     elif is_numbered_action_just_pressed('down'):
       explicitly_selected_index = selected_index - 1
       selection_velocity -= selection_impulse
       if explicitly_selected_index < 0:
         explicitly_selected_index += item_count
+      if selection_rotation < explicitly_selected_index:
         selection_rotation += item_count
 
   if explicitly_selected_index == -1:
