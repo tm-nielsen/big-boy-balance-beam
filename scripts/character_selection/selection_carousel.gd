@@ -129,7 +129,9 @@ func _get_displacement(index: int) -> Vector2:
 func _get_selected_index() -> int:
   if explicitly_selected_index >= 0:
     return explicitly_selected_index
-  return roundi(selection_rotation)
+  var rounded_index = roundi(selection_rotation)
+  if rounded_index >= item_count: return 0
+  return rounded_index
 
 
 func _draw():
