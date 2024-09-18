@@ -11,9 +11,18 @@ signal reset_completed
 @export var reset_easing: Tween.EaseType = Tween.EASE_IN_OUT
 @export var reset_transition: Tween.TransitionType = Tween.TRANS_BACK
 
+@export var cancellation_threshold: float = 0.6
+
+var reset_tween: Tween
+var can_cancel_reset := false
+
+
+func _process(_delta: float):
+  if reset_tween && can_cancel_reset && Input.is_anything_pressed():
+    cancel_reset()
 
 func start_reset():
-  var reset_tween = _create_reset_tween()
+  reset_tween = _create_reset_tween()
 
   ball_manager.physics_enabled = false
   for ball in PhysicsBallManager.physics_balls:
@@ -22,24 +31,37 @@ func start_reset():
 
   _tween_signal_callback(reset_tween)
 
+  can_cancel_reset = false
+  var cancel_window_tween = create_tween()
+  cancel_window_tween.tween_interval(cancellation_threshold)
+  cancel_window_tween.tween_callback(_open_cancellation_window)
+
 
 func _create_reset_tween() -> Tween:
-  var reset_tween = create_tween()
-  reset_tween.set_ease(reset_easing)
-  reset_tween.set_trans(reset_transition)
-  reset_tween.set_parallel(true)
-  return reset_tween
+  var tween = create_tween()
+  tween.set_ease(reset_easing)
+  tween.set_trans(reset_transition)
+  tween.set_parallel(true)
+  return tween
 
-func _tween_signal_callback(reset_tween: Tween):
-  reset_tween.set_parallel(false)
-  reset_tween.tween_interval(reset_duration)
-  reset_tween.tween_callback(reset_completed.emit)
+func _tween_signal_callback(tween: Tween):
+  tween.set_parallel(false)
+  tween.tween_callback(reset_completed.emit)
+
+
+func cancel_reset():
+  reset_tween.kill()
+  can_cancel_reset = false
+  reset_completed.emit()
+
+func _open_cancellation_window():
+  can_cancel_reset = true
 
 
 func reset_ball(ball: PhysicsBall):
-  var reset_tween = _create_reset_tween()
-  ball.start_tweened_reset(reset_tween, reset_duration)
-  _tween_signal_callback(reset_tween)
+  var tween = _create_reset_tween()
+  ball.start_tweened_reset(tween, reset_duration)
+  _tween_signal_callback(tween)
 
 
 func freeze():
