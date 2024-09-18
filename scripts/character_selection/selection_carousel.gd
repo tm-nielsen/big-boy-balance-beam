@@ -40,6 +40,7 @@ func _ready():
   item_count = items.size()
 
 func _process(delta: float):
+  if !visible: return
   if Engine.is_editor_hint(): queue_redraw()
   elif is_numbered_action_just_pressed('button'):
     _select_item()

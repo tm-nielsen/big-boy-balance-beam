@@ -1,21 +1,15 @@
-[gd_scene load_steps=3 format=3 uid="uid://bhff3t7o815en"]
+[gd_scene load_steps=4 format=3 uid="uid://bhff3t7o815en"]
 
 [ext_resource type="Script" path="res://scripts/character_selection/character_selector.gd" id="1_b3odk"]
+[ext_resource type="PackedScene" uid="uid://dy63n5m0j3xh2" path="res://scenes/prefabs/character_selector.tscn" id="1_olccc"]
 [ext_resource type="PackedScene" uid="uid://dsq45rp2r5sat" path="res://scenes/prefabs/character_preview.tscn" id="4_cy3e1"]
 
 [node name="Node2D" type="Node2D"]
 
 [node name="Camera2D" type="Camera2D" parent="."]
 
-[node name="CharacterSelector" type="Node2D" parent="."]
+[node name="CharacterSelector" parent="." instance=ExtResource("1_olccc")]
 position = Vector2(-40, 0)
-script = ExtResource("1_b3odk")
-preview_prefab = ExtResource("4_cy3e1")
-carousel_item_count = 2.0
-carousel_radius = 60.0
-size = Vector2(36, 100)
-fill_colour = Color(1, 1, 1, 0.588235)
-border_colour = Color(0.1, 0.1, 0.1, 1)
 
 [node name="CharacterSelector2" type="Node2D" parent="."]
 position = Vector2(40, 0)

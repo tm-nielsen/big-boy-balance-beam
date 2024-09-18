@@ -2,7 +2,9 @@
 class_name CharacterSelector
 extends SelectionCarousel
 
-signal character_selected(file_path: String)
+signal character_selected(player_node)
+
+@export var player_target: PlayerController
 
 @export_subgroup('preview settings', 'preview')
 @export var preview_prefab: PackedScene
@@ -14,6 +16,13 @@ signal character_selected(file_path: String)
 @export_dir var extra_characters_path := 'characters'
 
 var character_file_paths: Array[String]
+
+
+func start_selecting():
+  explicitly_selected_index = -1
+  selection_rotation = 0
+  show()
+  player_target.hide()
 
 
 func _create_items(parent_node: Node):
@@ -75,4 +84,14 @@ func _move_item(index: int):
 
 
 func _select_item():
-  character_selected.emit(character_file_paths[selected_index])
+  var selected_filepath = character_file_paths[selected_index]
+  player_target.drawer.file_path = selected_filepath
+
+  var selected_preview = items[selected_index]
+  player_target.squish_ratio = selected_preview.squish_ratio
+  player_target.squish_reset_delta = selected_preview.squish_delta
+  player_target.squish_state = selected_preview.squish_state
+  player_target.position = position
+  player_target.show()
+  character_selected.emit(player_target)
+  hide()

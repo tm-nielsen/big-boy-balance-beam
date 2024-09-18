@@ -1,0 +1,13 @@
+[gd_scene load_steps=3 format=3 uid="uid://dy63n5m0j3xh2"]
+
+[ext_resource type="Script" path="res://scripts/character_selection/character_selector.gd" id="1_8oqac"]
+[ext_resource type="PackedScene" uid="uid://dsq45rp2r5sat" path="res://scenes/prefabs/character_preview.tscn" id="2_t1i6k"]
+
+[node name="CharacterSelector" type="Node2D"]
+script = ExtResource("1_8oqac")
+preview_prefab = ExtResource("2_t1i6k")
+carousel_item_count = 2.0
+carousel_radius = 60.0
+size = Vector2(36, 100)
+fill_colour = Color(1, 1, 1, 0.588235)
+border_colour = Color(0.1, 0.1, 0.1, 1)
