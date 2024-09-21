@@ -43,11 +43,13 @@ func _ready():
   _create_items(item_viewport)
   item_count = items.size()
 
-func _process(delta: float):
+func _process(_delta: float):
   if !visible: return
   if Engine.is_editor_hint(): queue_redraw()
   elif is_numbered_action_just_pressed('button'):
     _select_item()
+
+func _physics_process(delta: float):
   _process_movement(delta)
   _move_items()
 
