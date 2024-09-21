@@ -25,8 +25,8 @@ viewport_path = NodePath("GameViewportContainer/GameViewport")
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_m7sfj"]
 resource_local_to_scene = true
 shader = ExtResource("2_priph")
-shader_parameter/warp_amount = 0.5
-shader_parameter/noise_amount = 0.2
+shader_parameter/warp_amount = 0.0
+shader_parameter/noise_amount = 0.0
 shader_parameter/noise_speed = 8.0
 shader_parameter/viewport_texture = SubResource("ViewportTexture_kxy2f")
 shader_parameter/noise = SubResource("NoiseTexture2D_h0o56")
@@ -39,15 +39,6 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 theme = ExtResource("1_2pr5f")
-
-[node name="Background" type="ColorRect" parent="."]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-color = Color(0.133333, 0.133333, 0.133333, 1)
 
 [node name="GameViewportContainer" type="SubViewportContainer" parent="."]
 material = SubResource("ShaderMaterial_m7sfj")

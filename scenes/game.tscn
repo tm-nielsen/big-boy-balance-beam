@@ -1,4 +1,4 @@
-[gd_scene load_steps=29 format=3 uid="uid://siguvig7u465"]
+[gd_scene load_steps=39 format=3 uid="uid://siguvig7u465"]
 
 [ext_resource type="Script" path="res://scripts/reset_manager.gd" id="1_e3wct"]
 [ext_resource type="Script" path="res://scripts/shaky_camera.gd" id="1_hje18"]
@@ -6,8 +6,13 @@
 [ext_resource type="Script" path="res://scripts/physics/balls/player_controller.gd" id="1_m3mpd"]
 [ext_resource type="Script" path="res://scripts/physics/stage_limits.gd" id="1_s5gh3"]
 [ext_resource type="Script" path="res://scripts/physics/balls/physics_ball_manager.gd" id="1_vyn2h"]
+[ext_resource type="Material" uid="uid://cejtc8tbhpai1" path="res://visuals/materials/bamboo.tres" id="2_6ivih"]
 [ext_resource type="Script" path="res://scripts/physics/beam/time_dependant_balance_beam.gd" id="2_k61rr"]
 [ext_resource type="Script" path="res://scripts/drawing/path_drawing/character_drawer.gd" id="2_radw7"]
+[ext_resource type="Material" uid="uid://b6dnl77sqoh60" path="res://visuals/materials/paper.tres" id="3_3cl1v"]
+[ext_resource type="Material" uid="uid://c6onc6tfg5g51" path="res://visuals/materials/pool_tiles.tres" id="3_3m36a"]
+[ext_resource type="Material" uid="uid://78tertltqse5" path="res://visuals/materials/white_tiles.tres" id="3_auagx"]
+[ext_resource type="Script" path="res://scripts/background_mesh.gd" id="4_osevm"]
 [ext_resource type="Shader" path="res://visuals/shaders/waves.gdshader" id="10_6n8yc"]
 [ext_resource type="Shader" path="res://visuals/shaders/distorted_waves.gdshader" id="10_vve22"]
 [ext_resource type="Script" path="res://scripts/water_effects/distorted_water.gd" id="11_w0r1a"]
@@ -18,6 +23,14 @@
 [ext_resource type="PackedScene" uid="uid://dy63n5m0j3xh2" path="res://scenes/prefabs/character_selector.tscn" id="17_bj4qq"]
 [ext_resource type="Script" path="res://scripts/round_manager.gd" id="17_bo278"]
 [ext_resource type="PackedScene" uid="uid://d0sr38vvbbgsc" path="res://scenes/prefabs/scoring_light.tscn" id="18_8b4re"]
+[ext_resource type="Material" uid="uid://b3a1wp26lujoc" path="res://visuals/materials/black_tiles.tres" id="20_eys5j"]
+[ext_resource type="Script" path="res://scripts/character_selection_background_door.gd" id="23_p10ha"]
+
+[sub_resource type="Environment" id="Environment_8e0ko"]
+background_mode = 1
+
+[sub_resource type="QuadMesh" id="QuadMesh_mgi3i"]
+size = Vector2(1.5, 1.5)
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_lb16j"]
 shader = ExtResource("10_vve22")
@@ -89,6 +102,10 @@ shader_parameter/outline_colour = Color(0.45, 0.411975, 0.2745, 1)
 [sub_resource type="QuadMesh" id="QuadMesh_wnk81"]
 size = Vector2(24, 16)
 
+[sub_resource type="QuadMesh" id="QuadMesh_n2s6v"]
+material = ExtResource("20_eys5j")
+size = Vector2(1, 1.5)
+
 [node name="Game" type="Node2D" node_paths=PackedStringArray("reset_manager", "round_manager", "stage_limits", "character_selectors")]
 texture_filter = 1
 script = ExtResource("1_imn7p")
@@ -103,6 +120,49 @@ score_base_speed = 8.0
 ball_manager = NodePath("../PhysicsBallManager")
 balance_beam = NodePath("../Beam")
 stage_limits = NodePath("../StageLimits")
+
+[node name="BackgroundViewportContainer" type="SubViewportContainer" parent="."]
+z_index = -10
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -150.0
+offset_top = -100.0
+offset_right = 150.0
+offset_bottom = 120.0
+grow_horizontal = 2
+grow_vertical = 2
+stretch = true
+
+[node name="BackgroundViewport" type="SubViewport" parent="BackgroundViewportContainer"]
+transparent_bg = true
+handle_input_locally = false
+size = Vector2i(300, 220)
+render_target_update_mode = 4
+
+[node name="Camera3D" type="Camera3D" parent="BackgroundViewportContainer/BackgroundViewport"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 1)
+cull_mask = 1048573
+projection = 1
+current = true
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="BackgroundViewportContainer/BackgroundViewport"]
+environment = SubResource("Environment_8e0ko")
+
+[node name="Background" type="MeshInstance3D" parent="BackgroundViewportContainer/BackgroundViewport"]
+material_override = ExtResource("3_auagx")
+mesh = SubResource("QuadMesh_mgi3i")
+script = ExtResource("4_osevm")
+material_pool = Array[Material]([ExtResource("3_auagx"), ExtResource("3_3cl1v"), ExtResource("3_3m36a"), ExtResource("2_6ivih")])
+
+[node name="OmniLight3D" type="OmniLight3D" parent="BackgroundViewportContainer/BackgroundViewport"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.5)
+light_energy = 0.4
+omni_range = 1.0
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="BackgroundViewportContainer/BackgroundViewport"]
+transform = Transform3D(1, 0, 0, 0, 0.34202, 0.939693, 0, -0.939692, 0.34202, 0, 0, 0)
+sky_mode = 1
 
 [node name="ResetManager" type="Node2D" parent="." node_paths=PackedStringArray("ball_manager", "balance_beam")]
 script = ExtResource("1_e3wct")
@@ -131,8 +191,8 @@ shrink_amount = 40.0
 shrink_tween_duration = 0.2
 shrink_tween_easing = 2
 shrink_tween_transition_type = 10
-fill_colour = Color(0.4, 0.4, 0.4, 1)
-stroke_width = 1.5
+fill_colour = Color(0.8, 0.8, 0.8, 0.588235)
+stroke_width = 2.5
 ball_mass = 0.25
 
 [node name="PhysicsBallManager" type="Node2D" parent="."]
@@ -204,7 +264,7 @@ material = SubResource("ShaderMaterial_e3hm2")
 mesh = SubResource("QuadMesh_b4cbx")
 
 [node name="BacksplashParticles" type="MeshInstance2D" parent="Water"]
-self_modulate = Color(0, 0, 0, 0.470588)
+self_modulate = Color(0.2, 0.2, 0.2, 0.156863)
 z_index = -2
 material = SubResource("ShaderMaterial_j5bxo")
 mesh = SubResource("QuadMesh_4wykg")
@@ -236,6 +296,46 @@ script = ExtResource("14_jbfb5")
 [node name="CharacterSelection" type="Node2D" parent="."]
 z_index = 5
 
+[node name="BackgroundViewportContainer" type="SubViewportContainer" parent="CharacterSelection"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -150.0
+offset_top = -100.0
+offset_right = 150.0
+offset_bottom = 120.0
+grow_horizontal = 2
+grow_vertical = 2
+stretch = true
+
+[node name="BackgroundViewport" type="SubViewport" parent="CharacterSelection/BackgroundViewportContainer"]
+transparent_bg = true
+handle_input_locally = false
+size = Vector2i(300, 220)
+render_target_update_mode = 4
+
+[node name="Camera3D" type="Camera3D" parent="CharacterSelection/BackgroundViewportContainer/BackgroundViewport"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 1)
+cull_mask = 2
+projection = 1
+current = true
+
+[node name="LeftDoor" type="MeshInstance3D" parent="CharacterSelection/BackgroundViewportContainer/BackgroundViewport" node_paths=PackedStringArray("character_selector")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1, 0, 0.1)
+layers = 2
+mesh = SubResource("QuadMesh_n2s6v")
+script = ExtResource("23_p10ha")
+character_selector = NodePath("../../../P1Selector")
+
+[node name="RightDoor" type="MeshInstance3D" parent="CharacterSelection/BackgroundViewportContainer/BackgroundViewport" node_paths=PackedStringArray("character_selector")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 0, 0.1)
+layers = 2
+mesh = SubResource("QuadMesh_n2s6v")
+script = ExtResource("23_p10ha")
+open_position = Vector3(1.25, 0, 0)
+closed_position = Vector3(0.5, 0, 0)
+character_selector = NodePath("../../../P2Selector")
+
 [node name="P1Selector" parent="CharacterSelection" node_paths=PackedStringArray("player_target") instance=ExtResource("17_bj4qq")]
 position = Vector2(-40, 0)
 player_target = NodePath("../../PhysicsBallManager/Player1")
@@ -246,6 +346,7 @@ player_target = NodePath("../../PhysicsBallManager/Player2")
 player_index = 2
 
 [connection signal="round_won" from="." to="Crown" method="_on_round_won"]
+[connection signal="state_changed" from="." to="BackgroundViewportContainer/BackgroundViewport/Background" method="_on_game_state_changed"]
 [connection signal="bottom_threshold_reached" from="StageLimits" to="Water/Front" method="_on_stage_limits_bottom_threshold_reached"]
 [connection signal="bottom_threshold_reached" from="StageLimits" to="Water/BacksplashParticles" method="_on_stage_limits_bottom_threshold_reached"]
 [connection signal="bottom_threshold_reached" from="StageLimits" to="Crown" method="_on_stage_limits_bottom_threshold_reached"]

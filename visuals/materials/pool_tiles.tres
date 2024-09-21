@@ -1,0 +1,20 @@
+[gd_resource type="StandardMaterial3D" load_steps=5 format=3 uid="uid://c6onc6tfg5g51"]
+
+[ext_resource type="Texture2D" uid="uid://d0t5n6w5ugf7e" path="res://visuals/textures/pool_tiles/Tiles035_1K-JPG_Color.jpg" id="1_i6qkr"]
+[ext_resource type="Texture2D" uid="uid://byep8fto808kq" path="res://visuals/textures/pool_tiles/Tiles035_1K-JPG_Displacement.jpg" id="2_32qa3"]
+[ext_resource type="Texture2D" uid="uid://buqx5wsb1vtwm" path="res://visuals/textures/pool_tiles/Tiles035_1K-JPG_NormalGL.jpg" id="3_p1uf4"]
+[ext_resource type="Texture2D" uid="uid://blev3gi813hrs" path="res://visuals/textures/pool_tiles/Tiles035_1K-JPG_Roughness.jpg" id="4_gubt5"]
+
+[resource]
+diffuse_mode = 3
+specular_mode = 1
+albedo_texture = ExtResource("1_i6qkr")
+roughness_texture = ExtResource("4_gubt5")
+roughness_texture_channel = 4
+normal_enabled = true
+normal_texture = ExtResource("3_p1uf4")
+heightmap_enabled = true
+heightmap_scale = 1.0
+heightmap_texture = ExtResource("2_32qa3")
+uv1_scale = Vector3(1.5, 1.5, 1.5)
+texture_filter = 2

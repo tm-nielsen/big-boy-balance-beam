@@ -62,12 +62,13 @@ func _on_bottom_threshold_reached(ball: PlayerController):
 
 
 func _start_delayed_round_reset():
-  state = GameState.CHARACTER_SELECTION
+  state = GameState.RESET_DELAY
   var round_reset_tween = create_tween()
   round_reset_tween.tween_interval(round_reset_delay)
   round_reset_tween.tween_callback(_reset_round)
 
 func _reset_round():
+  state = GameState.CHARACTER_SELECTION
   reset_manager.start_reset()
   round_manager.reset_round()
   for selector in character_selectors:
