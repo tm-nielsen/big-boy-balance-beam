@@ -10,6 +10,7 @@ extends Node2D
 @export var elasticity: float = 2
 @export var friction: float = 0.15
 @export var selection_impulse: float = 6
+@export var selection_scroll_delay: float = 0.25;
 
 @export_subgroup('carousel settings')
 @export var carousel_item_count: float = 3
@@ -33,6 +34,7 @@ var selection_rotation: float
 var selection_velocity: float
 var explicitly_selected_index: int = -1
 var selected_index: int: get = _get_selected_index
+var selection_scroll_timer: float
 
 var hidden_index: int = -1
 var hidden_item: CanvasItem
@@ -58,25 +60,45 @@ func _select_item(): pass
 
 func _process_movement(delta: float):
   if !Engine.is_editor_hint():
-    if is_numbered_action_just_pressed('up'):
-      explicitly_selected_index = selected_index + 1
-      selection_velocity += selection_impulse
-      if explicitly_selected_index >= item_count:
-        explicitly_selected_index -= item_count
-      if selection_rotation > explicitly_selected_index:
-        selection_rotation -= item_count
-    elif is_numbered_action_just_pressed('down'):
-      explicitly_selected_index = selected_index - 1
-      selection_velocity -= selection_impulse
-      if explicitly_selected_index < 0:
-        explicitly_selected_index += item_count
-      if selection_rotation < explicitly_selected_index:
-        selection_rotation += item_count
+    _process_input(delta)
 
   if explicitly_selected_index == -1:
     _spin_constant(delta)
   else:
     _spin_to_selected_index(delta)
+
+
+func _process_input(delta: float):
+    if is_numbered_action_pressed('up'):
+      _process_delayed_scroll(delta, 1)
+    elif is_numbered_action_pressed('down'):
+      _process_delayed_scroll(delta, -1)
+    else:
+      selection_scroll_timer = 0
+
+func _process_delayed_scroll(delta: float, direction := 1):
+  if selection_scroll_timer * direction <= 0:
+    selection_scroll_timer = selection_scroll_delay * direction
+  selection_scroll_timer += delta * direction
+  if selection_scroll_timer * direction > selection_scroll_delay:
+    selection_scroll_timer -= selection_scroll_delay * direction
+    _scroll(direction)
+
+
+func _scroll(direction := 1):
+  explicitly_selected_index = selected_index + direction
+  selection_velocity += selection_impulse * direction
+  _wrap_selected_index()
+  if selection_rotation * direction > explicitly_selected_index * direction:
+    selection_rotation -= item_count * direction
+
+func _wrap_selected_index():
+  if explicitly_selected_index >= item_count:
+    explicitly_selected_index -= item_count
+  elif explicitly_selected_index < 0:
+    explicitly_selected_index += item_count
+
+
 
 func _spin_constant(delta: float):
   selection_rotation -= delta * spin_speed
