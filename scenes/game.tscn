@@ -1,4 +1,4 @@
-[gd_scene load_steps=39 format=3 uid="uid://siguvig7u465"]
+[gd_scene load_steps=45 format=3 uid="uid://siguvig7u465"]
 
 [ext_resource type="Script" path="res://scripts/reset_manager.gd" id="1_e3wct"]
 [ext_resource type="Script" path="res://scripts/shaky_camera.gd" id="1_hje18"]
@@ -25,6 +25,8 @@
 [ext_resource type="PackedScene" uid="uid://d0sr38vvbbgsc" path="res://scenes/prefabs/scoring_light.tscn" id="18_8b4re"]
 [ext_resource type="Material" uid="uid://b3a1wp26lujoc" path="res://visuals/materials/black_tiles.tres" id="20_eys5j"]
 [ext_resource type="Script" path="res://scripts/character_selection_background_door.gd" id="23_p10ha"]
+[ext_resource type="Shader" path="res://visuals/shaders/button.gdshader" id="25_ix5gj"]
+[ext_resource type="Shader" path="res://visuals/shaders/simple_unlit.gdshader" id="26_ox5ud"]
 
 [sub_resource type="Environment" id="Environment_8e0ko"]
 background_mode = 1
@@ -105,6 +107,34 @@ size = Vector2(24, 16)
 [sub_resource type="QuadMesh" id="QuadMesh_n2s6v"]
 material = ExtResource("20_eys5j")
 size = Vector2(1, 1.5)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_ms5m6"]
+render_priority = 0
+shader = ExtResource("25_ix5gj")
+shader_parameter/frequency = 20.0
+shader_parameter/albedo = Color(0.02, 0.02, 0.02, 1)
+shader_parameter/roughness = 0.1
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_6g2at"]
+top_radius = 1.5
+bottom_radius = 1.5
+height = 1.0
+radial_segments = 9
+rings = 0
+cap_bottom = false
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_duwpd"]
+render_priority = 0
+shader = ExtResource("26_ox5ud")
+shader_parameter/albedo = Color(0.82, 0.82, 0.82, 1)
+shader_parameter/roughness = 0.1
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_dou1o"]
+top_radius = 1.7
+bottom_radius = 1.8
+height = 0.2
+radial_segments = 11
+rings = 0
 
 [node name="Game" type="Node2D" node_paths=PackedStringArray("reset_manager", "round_manager", "stage_limits", "character_selectors")]
 texture_filter = 1
@@ -327,6 +357,23 @@ mesh = SubResource("QuadMesh_n2s6v")
 script = ExtResource("23_p10ha")
 character_selector = NodePath("../../../P1Selector")
 
+[node name="Button" type="MeshInstance3D" parent="CharacterSelection/BackgroundViewportContainer/BackgroundViewport/LeftDoor"]
+transform = Transform3D(0.04, 0, 0, 0, 0.034641, -0.02, 0, 0.02, 0.034641, 0.1, 0.06, 0.25)
+layers = 2
+material_override = SubResource("ShaderMaterial_ms5m6")
+mesh = SubResource("CylinderMesh_6g2at")
+
+[node name="Button Housing" type="MeshInstance3D" parent="CharacterSelection/BackgroundViewportContainer/BackgroundViewport/LeftDoor/Button"]
+transform = Transform3D(1, 0, 0, 0, 0.996195, -0.0871557, 0, 0.0871557, 0.996195, 0, -0.8, -0.3)
+layers = 2
+material_override = SubResource("ShaderMaterial_duwpd")
+mesh = SubResource("CylinderMesh_dou1o")
+
+[node name="ButtonLight" type="OmniLight3D" parent="CharacterSelection/BackgroundViewportContainer/BackgroundViewport/LeftDoor"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.1, 0.1, 0.3)
+layers = 2
+omni_range = 0.2
+
 [node name="RightDoor" type="MeshInstance3D" parent="CharacterSelection/BackgroundViewportContainer/BackgroundViewport" node_paths=PackedStringArray("character_selector")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 0, 0.1)
 layers = 2
@@ -335,6 +382,24 @@ script = ExtResource("23_p10ha")
 open_position = Vector3(1.25, 0, 0)
 closed_position = Vector3(0.5, 0, 0)
 character_selector = NodePath("../../../P2Selector")
+
+[node name="Button" type="MeshInstance3D" parent="CharacterSelection/BackgroundViewportContainer/BackgroundViewport/RightDoor"]
+transform = Transform3D(0.04, 0, 0, 0, 0.034641, -0.02, 0, 0.02, 0.034641, -0.1, 0.06, 0.25)
+layers = 2
+material_override = SubResource("ShaderMaterial_ms5m6")
+mesh = SubResource("CylinderMesh_6g2at")
+skeleton = NodePath("../../LeftDoor")
+
+[node name="Button Housing" type="MeshInstance3D" parent="CharacterSelection/BackgroundViewportContainer/BackgroundViewport/RightDoor/Button"]
+transform = Transform3D(1, 0, 0, 0, 0.996195, -0.0871557, 0, 0.0871557, 0.996195, 0, -0.8, -0.3)
+layers = 2
+material_override = SubResource("ShaderMaterial_duwpd")
+mesh = SubResource("CylinderMesh_dou1o")
+
+[node name="ButtonLight" type="OmniLight3D" parent="CharacterSelection/BackgroundViewportContainer/BackgroundViewport/RightDoor"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.1, 0.1, 0.3)
+layers = 2
+omni_range = 0.2
 
 [node name="P1Selector" parent="CharacterSelection" node_paths=PackedStringArray("player_target") instance=ExtResource("17_bj4qq")]
 position = Vector2(-40, 0)
