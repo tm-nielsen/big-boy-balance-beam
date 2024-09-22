@@ -205,7 +205,14 @@ func get_subdivisision_point(insert_index: int, point: Vector2) -> Vector2:
 
     return point_a + ab_normal * line_ap.dot(ab_normal)
 
-    
+
+func mirror_horizontally() -> void:
+    points = _mirror_points(points)
+
+func _mirror_points(p_points: PackedVector2Array) -> PackedVector2Array:
+    for i in p_points.size():
+        p_points[i].x *= -1
+    return p_points
 
 
 func draw_path(draw_target: CanvasItem) -> void:

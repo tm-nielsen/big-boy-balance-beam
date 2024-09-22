@@ -4,6 +4,7 @@ extends PathSetDrawer
 @export var max_visual_ellipse_squish_ratio: float = 0.65
 
 var radius: float = 20
+var mirrored: bool = false
 
 var visual_rotation := 0.0
 var squish_ratio := 1.0
@@ -57,6 +58,7 @@ func _draw_path(path: ColouredPath):
 
 
 func distort_point(point: Vector2) -> Vector2:
+    if mirrored: point.x *= -1
     point = point.rotated(visual_rotation)
 
     match squish_state:

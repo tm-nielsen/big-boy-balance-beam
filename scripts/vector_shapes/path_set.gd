@@ -40,3 +40,7 @@ func translate(offset: Vector2) -> void:
         for point in path.points:
             translated_points.append(point + offset)
         path.points = translated_points
+
+func mirror_horizontally() -> void:
+    for path in paths:
+        path.mirror_horizontally()

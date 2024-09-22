@@ -18,7 +18,11 @@ static func read_file(filepath: String, _size:= Vector2.ZERO) -> ParseResult:
         if parser.get_node_type() == parser.NODE_ELEMENT and parser.get_node_name() == "svg":
             svg_element = read_element(parser)
 
-    return parse_path_set(svg_element)
+    var parse_result = parse_path_set(svg_element)
+    if filepath.ends_with('-l.svg'):
+        parse_result.path_set.mirror_horizontally()
+        parse_result.append_info_note('mirrored paths')
+    return parse_result
 
 
 static func read_element(parser: XMLParser) -> Dictionary:

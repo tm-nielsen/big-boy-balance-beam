@@ -3,6 +3,7 @@ class_name CharacterDrawer
 extends SquishyBallDrawer
 
 @export_file('*.svg') var file_path: String: set = _set_file_path
+@export var mirrored: bool
 var path_set_drawer: SquishyPathSetDrawer
 var file_body_radius: float
 
@@ -14,6 +15,7 @@ func _ready():
 func _create_path_set_drawer():
     path_set_drawer = SquishyPathSetDrawer.new()
     path_set_drawer.max_visual_ellipse_squish_ratio = max_visual_ellipse_squish_ratio
+    path_set_drawer.mirrored = mirrored
     add_child(path_set_drawer)
 
 
