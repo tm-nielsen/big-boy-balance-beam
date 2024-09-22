@@ -144,6 +144,11 @@ func _hide_item(index: int):
   items.remove_at(index)
   item_count -= 1
   hidden_index = index
+  if index == explicitly_selected_index:
+    selection_rotation -= 1
+  elif index < explicitly_selected_index:
+    explicitly_selected_index -= 1
+    selection_rotation -= 1
   _move_items(true)
 
 func _unhide_item():
@@ -151,6 +156,9 @@ func _unhide_item():
     hidden_item.show()
     items.insert(hidden_index, hidden_item)
     item_count += 1
+  if hidden_index > explicitly_selected_index && explicitly_selected_index > 0:
+    explicitly_selected_index += 1
+    selection_rotation += 1
   _move_items(true)
 
 
