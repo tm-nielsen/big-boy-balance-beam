@@ -11,6 +11,7 @@ signal character_selected(file_path: String)
 @export var preview_prefab: PackedScene
 @export var preview_radius: float = 12
 @export var preview_edge_radius: float = 6
+@export_range(0, 1) var preview_cull_threshold: float = 0.9
 
 @export_subgroup('directories')
 @export_dir var local_character_path := 'res://visuals/characters'
@@ -88,7 +89,7 @@ func _move_item(index: int, ignore_velocity := false):
   items[index].z_index = ceil(item_count / 2.0) - carousel_offset
   var normalized_offset = _normalize_carousel_offset(carousel_offset)
   items[index].radius = lerpf(preview_radius, preview_edge_radius, normalized_offset)
-  items[index].visible = abs(normalized_offset) < 0.8
+  items[index].visible = abs(normalized_offset) < preview_cull_threshold
 
 
 func _select_item():
