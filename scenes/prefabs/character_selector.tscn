@@ -6,6 +6,7 @@
 [node name="CharacterSelector" type="Node2D"]
 script = ExtResource("1_8oqac")
 preview_prefab = ExtResource("2_t1i6k")
+explicit_character_paths = Array[String](["res://visuals/characters/classic_angry-l.svg", "res://visuals/characters/classic_happy.svg", "res://visuals/characters/joker-l.svg", "res://visuals/characters/ninja.svg", "res://visuals/characters/knight.svg", "res://visuals/characters/fancy.svg", "res://visuals/characters/trucker.svg", "res://visuals/characters/gnome.svg", "res://visuals/characters/troll.svg", "res://visuals/characters/wizard.svg", "res://visuals/characters/ouroboros-l.svg", "res://visuals/characters/null.svg", "res://visuals/characters/question_mark.svg"])
 carousel_item_count = 2.0
 carousel_radius = 60.0
 size = Vector2(36, 100)

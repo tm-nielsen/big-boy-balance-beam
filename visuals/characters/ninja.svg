@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+
+<svg version="1.1">
+	<circle id="character_base"
+		fill="#303030ff" stroke="#000000ff" stroke-width="1.75"
+		r="16"
+	/>
+	<path id="mask line"
+		fill="#59441dff" stroke="#000000ff" stroke-width="1.75"
+		d="M -15.22,-0.68 -5.40,7.80 4.80,8.80 13.60,7.30 15.40,2.80 14.30,-2.00"
+	/>
+	<path id="left eye"
+		fill="#ffffffff" stroke="#000000ff" stroke-width="1.50"
+		d="M -7.10,0.80 -5.50,5.30 0.30,5.70 1.90,0.20 Z"
+	/>
+	<path id="right eye"
+		fill="#ffffffff" stroke="#000000ff" stroke-width="1.50"
+		d="M 1.70,-0.10 6.20,5.40 11.10,5.30 11.92,-0.46 Z"
+	/>
+	<path id="lower tie"
+		fill="#ffffffff" stroke="#aaaaaaff" stroke-width="1.50"
+		d="M -20.32,-3.86 -16.33,-6.37 -17.07,-2.38 -19.66,-0.09 Z"
+	/>
+	<path id="bandana"
+		fill="#ffffffff" stroke="#aaaaaaff" stroke-width="1.75"
+		d="M 17.17,0.14 3.19,3.31 -9.01,2.43 -17.88,-1.71 -15.44,-7.70 -3.98,-3.34 9.11,-4.37 14.21,-8.14 16.87,-6.07 Z"
+	/>
+	<path id="upper tie"
+		fill="#ffffffff" stroke="#aaaaaaff" stroke-width="1.50"
+		d="M -15.89,-6.52 -19.95,-10.58 -14.70,-13.47 -13.45,-8.37 Z"
+	/>
+</svg>

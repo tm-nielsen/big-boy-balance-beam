@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+
+<svg version="1.1">
+	<circle id="character_base"
+		fill="#5e523fb3" stroke="#383641ff" stroke-width="1.50"
+		r="16"
+	/>
+	<path id="green thing"
+		fill="#39b062ff" stroke="#0a521eff" stroke-width="3.00"
+		d="M -2.80,-5.60 -2.40,-21.40 13.10,-19.40 1.10,-17.30 Z"
+	/>
+	<path id="joker mouth"
+		fill="#ffffffff" stroke="#961f43ff" stroke-width="3.00"
+		d="M -8.30,14.90 8.10,5.90 -6.90,6.90 -17.60,-0.40 Z"
+	/>
+	<path id="left eye"
+		fill="#ffffffff" stroke="#000000ff" stroke-width="1.00"
+		d="M -11.90,-4.60 -9.70,1.50 -6.90,-2.30 Z"
+	/>
+	<path id="right eye"
+		fill="#ffffffff" stroke="#000000ff" stroke-width="1.00"
+		d="M 3.80,4.10 2.20,-1.50 10.40,-3.10 Z"
+	/>
+</svg>

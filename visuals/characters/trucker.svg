@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+
+<svg version="1.1">
+	<circle id="character_base"
+		fill="#d6b195ff" stroke="#c29767ff" stroke-width="1.50"
+		r="16"
+	/>
+	<path id="Right Eye"
+		fill="#ffffffff" stroke="#000000ff" stroke-width="1.50"
+		d="M 14.90,4.50 15.30,8.70 18.80,9.10 20.90,6.30 18.20,3.50 Z"
+	/>
+	<path id="hat top"
+		fill="#548d50ff" stroke="#253a1bff" stroke-width="1.50"
+		d="M -18.03,-2.23 -16.40,-11.10 -9.70,-18.90 0.80,-22.20 13.00,-21.50 16.10,-18.50 16.40,-13.10 17.61,-1.12 8.22,-3.34 -4.94,-3.12 -15.74,-0.01 Z"
+	/>
+	<path id="hat yellow"
+		fill="#f0ef4aff" stroke="#00000000" stroke-width="1.50"
+		d="M -0.88,-5.70 -4.06,-10.73 -0.36,-15.09 9.40,-16.13 14.28,-12.06 14.28,-5.70 7.70,-6.74 Z"
+	/>
+	<path id="hat fish"
+		fill="#7baedaff" stroke="#425c71ff" stroke-width="1.50"
+		d="M -1.69,-12.36 3.49,-11.62 7.63,-14.35 12.06,-12.65 12.43,-8.81 7.63,-6.89 3.63,-9.77 0.53,-6.74 Z"
+	/>
+	<path id="hat brim"
+		fill="#548d50ff" stroke="#253a1bff" stroke-width="1.50"
+		d="M -8.05,-2.23 1.49,-7.26 12.21,-7.40 19.24,-6.15 21.38,-2.82 16.35,-1.12 8.52,-3.12 -1.76,-2.08 Z"
+	/>
+	<path id="mustache"
+		fill="#b0b0b0ff" stroke="#676767ff" stroke-width="1.50"
+		d="M -0.80,11.89 -0.36,3.91 6.89,1.32 13.40,2.50 15.69,10.78 10.14,7.68 4.89,7.68 Z"
+	/>
+	<path id="Left Eye"
+		fill="#ffffffff" stroke="#000000ff" stroke-width="1.50"
+		d="M -8.50,7.90 -11.80,10.00 -10.40,14.30 -4.00,13.70 -3.80,9.30 Z"
+	/>
+</svg>

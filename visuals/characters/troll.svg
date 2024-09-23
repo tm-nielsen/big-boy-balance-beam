@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+
+<svg version="1.1">
+	<circle id="character_base"
+		fill="#98b9bdff" stroke="#5c7477ff" stroke-width="1.50"
+		r="16"
+	/>
+	<path id="Shape 4"
+		fill="#98b9bdff" stroke="#5c7477ff" stroke-width="1.50"
+		d="M -11.45,-4.82 -16.33,-7.70 -19.58,-4.08 -16.40,3.91 -16.63,7.60 -14.70,11.15 -11.23,8.49"
+	/>
+	<path id="Shape 3"
+		fill="#ffffffff" stroke="#000000ff" stroke-width="1.50"
+		d="M 17.54,1.17 21.90,-0.53 24.27,3.09 21.46,7.23 16.72,5.16 Z"
+	/>
+	<path id="Shape 1"
+		fill="#ffffffff" stroke="#888888ff" stroke-width="1.50"
+		d="M -4.13,8.05 -1.62,-0.90 1.49,7.38 3.41,3.17 5.04,8.19 8.00,2.65 10.29,7.68 12.43,-2.53 16.58,7.75 11.62,11.15 4.30,11.45 Z"
+	/>
+	<path id="jaw"
+		fill="#98b9bdff" stroke="#5c7477ff" stroke-width="1.50"
+		d="M -7.75,9.60 -6.27,5.16 0.75,6.64 9.62,6.86 13.10,3.24 17.39,2.87 18.35,7.82 14.14,11.37 6.30,14.18"
+	/>
+	<path id="Shape 2"
+		fill="#ffffffff" stroke="#000000ff" stroke-width="1.50"
+		d="M -10.34,6.71 -13.89,4.57 -11.67,0.14 -7.09,0.43 -6.57,4.50 Z"
+	/>
+	<path id="Shape 5"
+		fill="#000000ff" stroke="#000000ff" stroke-width="1.50"
+		d="M -3.24,-12.95 -5.90,-16.57 -0.65,-15.91 -2.58,-19.23 4.37,-15.31 Z"
+	/>
+</svg>

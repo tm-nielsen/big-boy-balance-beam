@@ -13,8 +13,8 @@ signal character_selected(file_path: String)
 @export var preview_edge_radius: float = 6
 @export_range(0, 1) var preview_cull_threshold: float = 0.9
 
-@export_subgroup('directories')
-@export_dir var local_character_path := 'res://visuals/characters'
+@export_subgroup('character paths')
+@export_file var explicit_character_paths: Array[String]
 @export_dir var extra_characters_path := 'characters'
 
 var character_file_paths: Array[String]
@@ -45,10 +45,10 @@ func _create_items(parent_node: Node):
 
 func _get_file_paths() -> Array[String]:
   var file_paths: Array[String] = []
-  var local_paths = _get_paths_in_directory(local_character_path)
   var extra_paths = _get_paths_in_directory(extra_characters_path)
-  file_paths.append_array(local_paths)
+  file_paths.append_array(explicit_character_paths)
   file_paths.append_array(extra_paths)
+  file_paths.reverse()
   return file_paths
 
 func _get_paths_in_directory(directory_path: String) -> Array[String]:
