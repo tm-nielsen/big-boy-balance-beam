@@ -96,6 +96,7 @@ func _select_item():
   var selected_preview = items[selected_index]
   selected_preview.apply_squish_to_physics_ball(player_target)
   var selected_filepath = selected_preview.file_path
+  player_target.reset()
   player_target.drawer.file_path = selected_filepath
   player_target.position = position + _get_displacement(selected_index)
   player_target.show()
