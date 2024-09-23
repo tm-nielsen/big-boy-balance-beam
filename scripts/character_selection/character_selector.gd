@@ -88,6 +88,7 @@ func _move_item(index: int, ignore_velocity := false):
   items[index].z_index = ceil(item_count / 2.0) - carousel_offset
   var normalized_offset = _normalize_carousel_offset(carousel_offset)
   items[index].radius = lerpf(preview_radius, preview_edge_radius, normalized_offset)
+  items[index].visible = abs(normalized_offset) < 0.8
 
 
 func _select_item():

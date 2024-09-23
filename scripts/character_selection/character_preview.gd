@@ -43,7 +43,8 @@ func _physics_process(delta: float):
     squish_delta += acceleration.length() * acceleration_mutliplier
   _oscillate_squish_ratio(delta)
   _set_squish_state(acceleration)
-  drawer.update_parameters(0, squish_ratio, squish_normal, squish_state)
+  if visible:
+    drawer.update_parameters(0, squish_ratio, squish_normal, squish_state)
 
 
 func _oscillate_squish_ratio(delta):
