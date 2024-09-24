@@ -59,7 +59,6 @@ func _oscillate_squish_ratio(delta):
     if abs(squish_delta) < 0.005 and abs(1.0 - squish_ratio) < 0.005:
         squish_ratio = 1.0
         squish_delta = 0.0
-    queue_redraw()
 
 
 func _set_squish_state(acceleration: Vector2):

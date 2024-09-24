@@ -84,7 +84,6 @@ func _oscillate_squish_ratio(delta):
     if abs(squish_reset_delta) < 0.005 and abs(squish_reset_target - squish_ratio) < 0.005:
         squish_ratio = squish_reset_target
         squish_reset_delta = 0.0
-    queue_redraw()
 
 
 func _set_squish_state():

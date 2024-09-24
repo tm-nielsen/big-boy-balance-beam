@@ -95,7 +95,6 @@ func _apply_jump_charge():
         jump_charge = 1.0
 
     squish_reset_target = lerpf(1, charged_squish_ratio, jump_charge)
-    queue_redraw()
 
 
 func _drop(delta):
