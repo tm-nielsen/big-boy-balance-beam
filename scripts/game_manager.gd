@@ -1,6 +1,7 @@
 class_name GameManager
 extends Node2D
 
+signal player_scored(player_index: int)
 signal round_won(player_index: int)
 signal state_changed(new_state: GameState)
 
@@ -54,6 +55,7 @@ func _on_bottom_threshold_reached(ball: PlayerController):
   if state == GameState.GAMEPLAY:
     var scoring_index = ball.player_index % 2
     round_manager.add_player_score(scoring_index)
+    player_scored.emit(scoring_index)
     if round_manager.win_threshold_reached:
       round_won.emit(scoring_index + 1)
       _start_delayed_round_reset()
