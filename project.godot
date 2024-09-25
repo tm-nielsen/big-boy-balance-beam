@@ -13,7 +13,10 @@ config_version=5
 config/name="Big Boy Balance Beam"
 run/main_scene="res://scenes/root.tscn"
 config/features=PackedStringArray("4.3", "GL Compatibility")
-config/icon="res://icon.svg"
+boot_splash/image="res://visuals/textures/splash_screen.png"
+boot_splash/use_filter=false
+config/icon="res://visuals/textures/desktop_icon.png"
+boot_splash/minimum_display_time=5000
 
 [audio]
 
