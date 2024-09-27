@@ -36,8 +36,8 @@ func load_settings(config: ConfigFile):
   timeout_period = config.get_value("TIMEOUT", "timeout_period_seconds", 180)
 
   master_volume = config.get_value("VOLUME", "master_volume", 1.0)
-  music_volume = config.get_value("VOLUME", "music_volume", 0.5)
-  sfx_volume = config.get_value("VOLUME", "sfx_volume", 0.5)
+  music_volume = config.get_value("VOLUME", "music_volume", 1.0)
+  sfx_volume = config.get_value("VOLUME", "sfx_volume", 1.0)
 
 
 func save_settings(config: ConfigFile):
