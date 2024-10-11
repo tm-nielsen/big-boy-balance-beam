@@ -5,6 +5,8 @@ const FILE_NAME := "settings.ini"
 var timeout_enabled: bool
 var timeout_period: int
 
+var joystick_squishes: bool
+
 var master_volume: float
 var music_volume: float
 var sfx_volume: float
@@ -13,6 +15,7 @@ var last_input_timestamp: int = 0
 
 func _ready():
   process_mode = Node.PROCESS_MODE_ALWAYS
+  Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
   var config = ConfigFile.new()
   load_settings(config)
   save_settings(config)
@@ -35,6 +38,8 @@ func load_settings(config: ConfigFile):
   timeout_enabled = config.get_value("TIMEOUT", "timeout_enabled", true)
   timeout_period = config.get_value("TIMEOUT", "timeout_period_seconds", 180)
 
+  joystick_squishes = config.get_value("CONTROLS", "joystick_squishes", true)
+
   master_volume = config.get_value("VOLUME", "master_volume", 1.0)
   music_volume = config.get_value("VOLUME", "music_volume", 1.0)
   sfx_volume = config.get_value("VOLUME", "sfx_volume", 1.0)
@@ -43,6 +48,7 @@ func load_settings(config: ConfigFile):
 func save_settings(config: ConfigFile):
   config.set_value("TIMEOUT", "timeout_enabled", timeout_enabled)
   config.set_value("TIMEOUT", "timeout_period_seconds", timeout_period)
+  config.set_value("CONTROLS", "joystick_squishes", joystick_squishes)
   config.set_value("VOLUME", "master_volume", master_volume)
   config.set_value("VOLUME", "music_volume", music_volume)
   config.set_value("VOLUME", "sfx_volume", sfx_volume)
