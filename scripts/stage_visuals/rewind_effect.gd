@@ -19,6 +19,7 @@ var effect_level: float
 
 
 func _ready():
+  GameObserver.game_state_changed.connect(_on_game_state_changed)
   _set_effect_level(0)
 
 

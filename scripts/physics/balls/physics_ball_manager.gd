@@ -28,6 +28,7 @@ func _physics_process(_delta: float):
         collision.normal *= -1
         ball_2.add_collision(collision)
         balls_collided.emit(collision)
+        GameObserver.notify_balls_collided(collision.speed)
 
 
 func reset_balls():

@@ -6,6 +6,7 @@ const GameState := GameManager.GameState
 @export var material_change_delay: float = 0.4
 
 func _ready():
+  GameObserver.game_state_changed.connect(_on_game_state_changed)
   _randomize_material()
 
 func _on_game_state_changed(new_state: GameState):

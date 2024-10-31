@@ -43,6 +43,8 @@ buses/default_bus_layout="res://bus_layout.tres"
 [autoload]
 
 Settings="*res://scripts/game_management/settings.gd"
+GameObserver="*res://scripts/game_management/game_observer.gd"
+AudioManager="res://scenes/globals/AudioManager.tscn"
 
 [debug]
 

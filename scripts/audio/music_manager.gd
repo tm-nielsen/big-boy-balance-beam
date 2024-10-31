@@ -1,25 +1,36 @@
-extends Node2D
+class_name MusicManager
+extends FmodParameterManager
 
 const GameState = GameManager.GameState
 
-@export var main_loop_player: AudioStreamPlayer
-@export var transition_player: AudioStreamPlayer
-@export var semitones_increase: int = 1
+var player_scores: Array[int] = [0, 0]
 
-var score_count: int
+
+func _ready():
+	return
+	FmodServer.create_event_instance("event:/StageMusic").start()
+	GameObserver.game_state_changed.connect(_on_game_state_changed)
+	GameObserver.player_scored.connect(_on_player_scored)
+	GameObserver.round_won.connect(_on_round_won)
 
 
 func _on_game_state_changed(new_state: GameState):
-	if new_state == GameState.GAMEPLAY:
-		main_loop_player.play()
-		main_loop_player.pitch_scale = pow(2, score_count / 12.0)
-		transition_player.stop()
+	match new_state:
+		GameState.CHARACTER_SELECTION:
+			set_global_parameter('GameState', 'CharacterSelect')
+			set_global_parameter_by_value('RoundWinner', 0)
+			set_global_parameter_by_value('Player1Score', 0)
+			set_global_parameter_by_value('Player2Score', 1)
+		GameState.GAMEPLAY:
+			set_global_parameter('GameState', 'Gameplay')
+		GameState.RESETTING:
+			set_global_parameter('GameState', 'Resetting')
 
-func _on_round_won(_winner):
-	score_count = 0
-	main_loop_player.pitch_scale = 1
+func _on_player_scored(player_index: int):
+	player_scores[player_index] += 1
+	set_global_parameter_by_value('Player%dScore' % (player_index + 1), player_scores[player_index])
 
-func _on_player_scored(_scoring_index):
-	score_count += 1
-	main_loop_player.stop()
-	transition_player.play()
+func _on_round_won(winner_index: int):
+	set_global_parameter_by_value('RoundWinner', winner_index + 1)
+	set_global_parameter('RoundWon', 'Yes')
+	player_scores = [0, 0]

@@ -54,6 +54,7 @@ func _process(delta: float):
     if shrink_timer > shrink_period && width > shrink_minimum:
       start_shrink_tween()
       shrunk.emit()
+      GameObserver.notify_beam_shrunk()
       shrink_timer -= shrink_period
 
   if shrink_tween && shrink_tween.is_running():

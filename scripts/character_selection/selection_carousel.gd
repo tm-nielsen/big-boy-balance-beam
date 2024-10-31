@@ -89,6 +89,7 @@ func _scroll(direction := 1):
   explicitly_selected_index = selected_index + direction
   selection_velocity += selection_impulse * direction
   _wrap_selected_index()
+  GameObserver.notify_selection_carousel_scrolled()
   if selection_rotation * direction > explicitly_selected_index * direction:
     selection_rotation -= item_count * direction
 

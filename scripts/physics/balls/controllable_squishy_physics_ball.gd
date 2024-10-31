@@ -62,10 +62,12 @@ func _on_land(normal_velocity: Vector2):
             squish_reset_delta = -jump_charge * (1 - charged_squish_ratio) * landing_squish_elasticity
             squish_ratio = lerpf(1, charged_squish_ratio, jump_charge)
             squish_state = SquishState.STADIUM
+            GameObserver.notify_player_landed(jump_charge)
         else:
             var speed_saturation = abs(velocity.y) / jump_speed
             if speed_saturation > 0.25:
                 add_jiggle(-speed_saturation * (1 - charged_squish_ratio) * landing_squish_elasticity, Vector2.UP)
+            GameObserver.notify_player_bounced(speed_saturation)
 
 
 func _set_squish_state():
@@ -84,6 +86,8 @@ func _charge_jump(delta):
     _apply_jump_charge()
 
 func _apply_jump_charge():
+    if !charging_jump:
+        GameObserver.notify_player_started_charging_jump()
     charging_jump = true
 
     var tangent_velocity = velocity.project(BalanceBeam.tangent)
@@ -105,6 +109,7 @@ func _drop(delta):
 
 func _start_drop():
     is_dropping = true
+    GameObserver.notify_player_started_power_drop()
     if velocity.y < 0: velocity.y = 0
     velocity.y += drop_impulse
 
@@ -129,6 +134,7 @@ func _jump():
     squish_reset_target = 1.0
     squish_state = SquishState.EGG
 
+    GameObserver.notify_player_jumped(jump_charge)
     charging_jump = false
     should_charge_jump = false
     jump_charge = 0.0

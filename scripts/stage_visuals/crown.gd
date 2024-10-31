@@ -12,6 +12,9 @@ var target: PlayerController
 var velocity: Vector2
 
 
+func _ready():
+  GameObserver.round_won.connect(_on_round_won)
+
 func _physics_process(delta: float):
   if is_instance_valid(target):
     var delta_scale = delta * 60
@@ -30,7 +33,7 @@ func _on_round_won(leading_player_index: int):
 
 func _get_player_ball_by_index(player_index: int) -> PlayerController:
   for ball in PhysicsBallManager.physics_balls:
-    if ball.player_index == player_index:
+    if ball.player_index == player_index + 1:
       return ball
   return null
 
