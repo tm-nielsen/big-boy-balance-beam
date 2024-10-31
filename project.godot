@@ -42,7 +42,7 @@ buses/default_bus_layout="res://bus_layout.tres"
 
 [autoload]
 
-Settings="*res://scripts/settings.gd"
+Settings="*res://scripts/game_management/settings.gd"
 
 [debug]
 

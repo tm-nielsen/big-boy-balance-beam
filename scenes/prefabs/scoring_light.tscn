@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://d0sr38vvbbgsc"]
 
-[ext_resource type="Script" path="res://scripts/scoring_light.gd" id="1_3fyth"]
+[ext_resource type="Script" path="res://scripts/stage_visuals/scoring_light.gd" id="1_3fyth"]
 
 [node name="ScoringLight" type="Node2D"]
 script = ExtResource("1_3fyth")

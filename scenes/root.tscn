@@ -3,7 +3,7 @@
 [ext_resource type="Theme" uid="uid://b2wy1q7a4fn8u" path="res://visuals/ui_theme.tres" id="1_2pr5f"]
 [ext_resource type="PackedScene" uid="uid://siguvig7u465" path="res://scenes/game.tscn" id="1_3x1t2"]
 [ext_resource type="Shader" path="res://visuals/shaders/rewind_static.gdshader" id="2_priph"]
-[ext_resource type="Script" path="res://scripts/rewind_effect.gd" id="3_2m04s"]
+[ext_resource type="Script" path="res://scripts/stage_visuals/rewind_effect.gd" id="3_2m04s"]
 
 [sub_resource type="Gradient" id="Gradient_4jya7"]
 interpolation_mode = 1
