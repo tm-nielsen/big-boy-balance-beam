@@ -429,10 +429,10 @@ player_target = NodePath("../../PhysicsBallManager/Player2")
 player_index = 2
 
 [connection signal="player_scored" from="." to="MusicManager" method="_on_player_scored"]
-[connection signal="round_won" from="." to="Crown" method="_on_round_won"]
 [connection signal="round_won" from="." to="MusicManager" method="_on_round_won"]
-[connection signal="state_changed" from="." to="BackgroundViewportContainer/BackgroundViewport/Background" method="_on_game_state_changed"]
+[connection signal="round_won" from="." to="Crown" method="_on_round_won"]
 [connection signal="state_changed" from="." to="MusicManager" method="_on_game_state_changed"]
+[connection signal="state_changed" from="." to="BackgroundViewportContainer/BackgroundViewport/Background" method="_on_game_state_changed"]
 [connection signal="bottom_threshold_reached" from="StageLimits" to="Water/Front" method="_on_stage_limits_bottom_threshold_reached"]
 [connection signal="bottom_threshold_reached" from="StageLimits" to="Water/BacksplashParticles" method="_on_stage_limits_bottom_threshold_reached"]
 [connection signal="bottom_threshold_reached" from="StageLimits" to="Crown" method="_on_stage_limits_bottom_threshold_reached"]
