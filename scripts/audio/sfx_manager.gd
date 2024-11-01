@@ -25,15 +25,8 @@ func _on_player_scored(player_index: int):
   start_event('Player%dScored' % player_index)
 
 func _on_game_state_changed(new_state: GameState):
-  match new_state:
-    GameState.CHARACTER_SELECTION:
-      #start_event('CharacterSelectStarted')
-      pass
-    GameState.FROZEN:
-      start_event('Reset')
-    GameState.GAMEPLAY:
-	    #start_event('GameplayStarted')
-      pass
+  if new_state == GameState.RESETTING:
+    start_event('Reset')
 
 
 func _on_character_selected():
