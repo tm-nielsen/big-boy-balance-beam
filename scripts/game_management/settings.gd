@@ -56,12 +56,12 @@ func save_settings(config: ConfigFile):
 
 
 func apply_volume_settings():
-  var master_bus_index = AudioServer.get_bus_index("Master")
-  AudioServer.set_bus_volume_db(master_bus_index, linear_to_db(master_volume))
-  var music_bus_index = AudioServer.get_bus_index("Music")
-  AudioServer.set_bus_volume_db(music_bus_index, linear_to_db(music_volume))
-  var sfx_bus_index = AudioServer.get_bus_index("Sfx")
-  AudioServer.set_bus_volume_db(sfx_bus_index, linear_to_db(sfx_volume))
+  var master_bus = FmodServer.get_bus('bus:/')
+  master_bus.volume = master_volume
+  var music_bus = FmodServer.get_bus('bus:/Music')
+  music_bus.volume = music_volume
+  var sfx_bus = FmodServer.get_bus('bus:/SFX')
+  sfx_bus.volume = sfx_volume
 
 
 func get_file_path() -> String:
