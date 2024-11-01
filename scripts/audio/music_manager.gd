@@ -7,7 +7,6 @@ var player_scores: Array[int] = [0, 0]
 
 
 func _ready():
-	return
 	FmodServer.create_event_instance("event:/StageMusic").start()
 	GameObserver.game_state_changed.connect(_on_game_state_changed)
 	GameObserver.player_scored.connect(_on_player_scored)

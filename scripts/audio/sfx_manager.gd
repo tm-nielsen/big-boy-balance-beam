@@ -7,7 +7,6 @@ const GameState = GameManager.GameState
 
 
 func _ready():
-  return
   GameObserver.player_scored.connect(_on_player_scored)
   GameObserver.game_state_changed.connect(_on_game_state_changed)
   GameObserver.character_selected.connect(_on_character_selected)
