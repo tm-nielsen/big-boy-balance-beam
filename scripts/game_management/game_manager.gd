@@ -5,7 +5,7 @@ enum GameState {CHARACTER_SELECTION, FROZEN, GAMEPLAY, RESET_DELAY, RESETTING}
 
 @export var fallen_ball_reset_height: float = -120
 @export var reset_delay: float = 1
-@export var round_reset_delay: float = 2
+@export var round_reset_delay: float = 3.5
 
 @export_subgroup('references')
 @export var reset_manager: ResetManager
