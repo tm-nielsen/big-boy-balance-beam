@@ -27,12 +27,14 @@ func _on_player_scored(player_index: int):
 
 func _on_game_state_changed(new_state: GameState):
   match new_state:
-   GameState.CHARACTER_SELECTION:#start_event('CharacterSelectStarted')
-	pass
-   GameState.FROZEN:
-	start_event('Reset')
-   GameState.GAMEPLAY:
-	 #start_event('GameplayStarted')
+    GameState.CHARACTER_SELECTION:
+      #start_event('CharacterSelectStarted')
+      pass
+    GameState.FROZEN:
+      start_event('Reset')
+    GameState.GAMEPLAY:
+	    #start_event('GameplayStarted')
+      pass
 
 
 func _on_character_selected():
@@ -46,13 +48,13 @@ func _on_beam_shrunk():
   start_event('BeamShrunk')
 
 
-func _on_player_died(player_index: int):
+func _on_player_died(_player_index: int):
   start_event('Splash')
 
 func _on_players_collided(collision_speed: float):
   var speed_scale = collision_speed / collision_speed_scale_factor
   #start_event_with_parameters('Collision', {'NormalizedSpeed': speed_scale})
-  start_event_with_parameters('Bounced', {'NormalizedForce': jump_speed_scale})
+  start_event_with_parameters('Bounced', {'NormalizedForce': speed_scale})
 
 func _on_player_started_charging_jump():
   start_event('Squish')
