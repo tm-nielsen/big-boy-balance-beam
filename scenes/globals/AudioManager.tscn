@@ -9,9 +9,12 @@ process_mode = 3
 script = ExtResource("1_tqm6g")
 
 [node name="FmodBankLoader" type="FmodBankLoader" parent="."]
+bank_paths = ["res://audio/Master.strings.bank", "res://audio/Master.bank"]
 
 [node name="MusicManager" type="Node" parent="FmodBankLoader"]
 script = ExtResource("2_exoy0")
 
 [node name="SfxManager" type="Node" parent="FmodBankLoader"]
 script = ExtResource("3_ftm23")
+collision_speed_scale_factor = null
+print_logs = null
