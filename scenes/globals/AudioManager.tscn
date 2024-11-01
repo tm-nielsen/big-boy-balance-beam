@@ -17,5 +17,4 @@ event_name = "StageMusic"
 
 [node name="SfxManager" type="Node" parent="FmodBankLoader"]
 script = ExtResource("3_ftm23")
-collision_speed_scale_factor = null
-print_logs = null
+collision_speed_scale_factor = 4.0
