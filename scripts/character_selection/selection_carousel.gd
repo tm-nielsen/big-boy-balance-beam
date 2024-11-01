@@ -52,8 +52,9 @@ func _process(_delta: float):
     _select_item()
 
 func _physics_process(delta: float):
-  _process_movement(delta)
-  _move_items()
+  if visible:
+    _process_movement(delta)
+    _move_items()
 
 func _select_item(): pass
 
