@@ -22,7 +22,7 @@ settings.ini
 
 ![Bb]uilds/*/config.ini
 ![Bb]uilds/*/description.txt
-![Bb]uilds/*/*cover.png
+![Bb]uilds/*windows*/*.png
 ![Bb]uilds/*arcade/settings.ini
 
 /[Cc]haracters/
